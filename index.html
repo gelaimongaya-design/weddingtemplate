@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Amara Wedding</title>
+<meta name="description" content="Wedding details and RSVP.">
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header class="hero">
+  <span class="edge" aria-hidden="true"></span>
+  <span class="corner tl" aria-hidden="true"><img src="assets/img/corner-tl.svg" alt=""></span>
+  <span class="corner tr" aria-hidden="true"><img src="assets/img/corner-tr.svg" alt=""></span>
+  <span class="corner bl" aria-hidden="true"><img src="assets/img/corner-bl.svg" alt=""></span>
+  <span class="corner br" aria-hidden="true"><img src="assets/img/corner-br.svg" alt=""></span>
+
+  <div class="wrap">
+    <div class="plate rise d1">
+      <span class="fill" aria-hidden="true"><img src="assets/img/wash-hero.svg" alt=""></span>
+      <span class="rim" aria-hidden="true"></span>
+      <span class="wreath" aria-hidden="true"><img src="assets/img/wreath.svg" alt=""></span>
+      <div class="inner">
+        <p class="caps top rise d2">Together with their families</p>
+        <h1 class="names">
+          <span class="n script gilt rise d3" id="name-a"></span>
+          <span class="amp rise d4">and</span>
+          <span class="n script gilt rise d5" id="name-b"></span>
+        </h1>
+        <span class="rule rise d6" aria-hidden="true"></span>
+        <p class="date rise d6" id="hero-date"></p>
+        <p class="venue rise d6" id="hero-venue"></p>
+      </div>
+    </div>
+    <p class="count rise d6" id="countdown"></p>
+  </div>
+</header>
+
+<div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
+
+<section class="wrap">
+  <div class="story veil">
+    <figure class="panel" style="margin:0">
+      <img src="assets/img/wash-story.svg" alt="">
+      <span class="rim" aria-hidden="true"></span>
+      <span class="art" aria-hidden="true"><img src="assets/img/illustration.svg" alt=""></span>
+    </figure>
+    <div class="quote">
+      <span class="caps">Our story</span>
+      <q>We met on a Tuesday, in the rain, arguing over the last umbrella in the shop.
+        She kept it. He kept her.</q>
+      <p class="sign">Mika and Paolo</p>
+    </div>
+  </div>
+</section>
+
+<div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
+
+<section class="wrap">
+  <div class="sec-head veil">
+    <span class="caps">The celebration</span>
+    <h2 class="serif">How the day unfolds</h2>
+  </div>
+  <div class="veil"><div id="schedule"></div></div>
+</section>
+
+<div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
+
+<section class="wrap">
+  <div class="sec-head veil">
+    <span class="caps">Good to know</span>
+    <h2 class="serif">Three small things</h2>
+  </div>
+  <div class="veil"><div id="notes"></div></div>
+</section>
+
+<div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
+
+<section class="wrap" id="rsvp">
+  <div class="sec-head veil">
+    <span class="caps">Kindly reply</span>
+    <h2 class="serif">Find your invitation</h2>
+    <p>Type your name and your whole party will appear.</p>
+  </div>
+  <div class="veil">
+
+    <div class="card">
+      <div id="step-search">
+        <label class="lbl" for="q">Your name</label>
+        <div class="search-row">
+          <input type="search" id="q" autocomplete="name" placeholder="First or last name" enterkeyhint="search">
+          <button class="btn" type="button" id="find-btn">Find</button>
+        </div>
+        <div class="hits" id="hits"></div>
+        <p class="status" id="search-status" role="status" aria-live="polite"></p>
+      </div>
+
+      <form id="step-reply" hidden novalidate>
+        <p class="party" id="party-label"></p>
+        <div id="guest-list"></div>
+        <div class="field">
+          <label class="lbl" for="song">Song request</label>
+          <input type="text" id="song" placeholder="Optional">
+        </div>
+        <div class="field">
+          <label class="lbl" for="note">A note</label>
+          <textarea id="note" placeholder="Optional"></textarea>
+        </div>
+        <div class="search-row">
+          <button class="btn" type="submit" id="send-btn">Send</button>
+          <button class="btn ghost" type="button" id="back-btn">Search again</button>
+        </div>
+        <p class="status" id="reply-status" role="status" aria-live="polite"></p>
+      </form>
+
+      <div id="step-done" hidden class="done">
+        <h3 id="done-title"></h3>
+        <p id="done-body"></p>
+        <button class="btn ghost" type="button" id="another-btn">Reply for another</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="wrap" id="photos">
+  <div class="sec-head veil">
+    <span class="caps">Share the day</span>
+    <h2 class="serif">Photos from you</h2>
+    <p>Anything you capture lands straight in our album.</p>
+  </div>
+  <div class="veil">
+
+    <div class="drop" id="drop" role="button" tabindex="0" aria-label="Choose photos or video">
+      <strong>Add photos or video</strong>
+      <span>Straight from your phone</span>
+      <input type="file" id="file-input" accept="image/*,video/*" multiple hidden>
+    </div>
+    <div class="queue" id="queue"></div>
+    <div class="search-row" id="upload-actions" hidden>
+      <button class="btn" type="button" id="upload-btn">Send</button>
+      <button class="btn ghost" type="button" id="clear-btn">Clear</button>
+    </div>
+    <p class="status" id="upload-status" role="status" aria-live="polite"></p>
+
+  </div>
+</section>
+
+<footer>
+  <span class="foot-spray l" aria-hidden="true"><img src="assets/img/foot-spray-l.svg" alt=""></span>
+  <span class="foot-spray r" aria-hidden="true"><img src="assets/img/foot-spray-r.svg" alt=""></span>
+  <div class="wrap">
+    <div class="seal veil"><span id="seal-mark">M</span></div>
+    <div class="names-sm veil" id="foot-names"></div>
+    <p class="caps veil" id="foot-line"></p>
+  </div>
+</footer>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

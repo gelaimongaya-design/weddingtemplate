@@ -3,107 +3,93 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Amara Wedding</title>
+<title>Sol Wedding</title>
 <meta name="description" content="Wedding details and RSVP.">
 <link rel="stylesheet" href="assets/css/fonts.css">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-<div class="cover" id="cover" role="button" tabindex="0" aria-label="Open the invitation">
-  <div class="flap">
-    <span class="stamp"><span id="cover-mark">M</span></span>
-    <span class="to"><b id="cover-names"></b></span>
-    <span class="open">Tap to open</span>
-  </div>
-</div>
-
-<header class="hero" id="top">
-  <span class="edge" aria-hidden="true"></span>
-  <span class="corner tl" aria-hidden="true"><img src="assets/img/corner-tl.svg" alt=""></span>
-  <span class="corner tr" aria-hidden="true"><img src="assets/img/corner-tr.svg" alt=""></span>
-  <span class="corner bl" aria-hidden="true"><img src="assets/img/corner-bl.svg" alt=""></span>
-  <span class="corner br" aria-hidden="true"><img src="assets/img/corner-br.svg" alt=""></span>
-
-  <div class="wrap">
+<div class="frame-grid">
+  <aside class="aside">
+    <span class="sun" aria-hidden="true"><img src="assets/img/sun-arc.svg" alt=""></span>
+    <span class="grass l" aria-hidden="true"><img src="assets/img/pampas-l.svg" alt=""></span>
+    <span class="grass r" aria-hidden="true"><img src="assets/img/pampas-r.svg" alt=""></span>
     <div class="plate rise d1">
-      <span class="fill" aria-hidden="true"><img src="assets/img/wash-hero.svg" alt=""></span>
+      <img src="assets/img/wash-hero.svg" alt="">
       <span class="rim" aria-hidden="true"></span>
-      <span class="wreath" aria-hidden="true"><img src="assets/img/wreath.svg" alt=""></span>
       <div class="inner">
-        <p class="caps top rise d2">Together with their families</p>
+        <p class="caps top rise d2">Together with</p>
         <h1 class="names">
-          <span class="n script gilt rise d3" id="name-a"></span>
+          <span class="n script rise d3" id="name-a"></span>
           <span class="amp rise d4">and</span>
-          <span class="n script gilt rise d5" id="name-b"></span>
+          <span class="n script rise d5" id="name-b"></span>
         </h1>
-        <span class="rule rise d6" aria-hidden="true"></span>
-        <p class="date rise d6" id="hero-date"></p>
-        <p class="venue rise d6" id="hero-venue"></p>
       </div>
     </div>
+    <p class="aside-meta rise d6" id="hero-date"></p>
+    <p class="aside-venue rise d6" id="hero-venue"></p>
     <p class="count rise d6" id="countdown"></p>
-  </div>
-</header>
+    <nav class="nav">
+      <a href="#story">Our story</a>
+      <a href="#day">The day</a>
+      <a href="#travel-sec">Getting there</a>
+      <a href="#rsvp">Reply</a>
+      <a href="#photos">Album</a>
+      <a href="#party">Wedding party</a>
+    </nav>
+  </aside>
 
-<div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
+  <div class="main">
+    <section class="wrap" id="story">
+      <div class="story veil">
+        <figure class="panel" style="margin:0">
+          <img src="assets/img/wash-story.svg" alt="">
+          <span class="rim" aria-hidden="true"></span>
+          <span class="art" aria-hidden="true"><img src="assets/img/illustration.svg" alt=""></span>
+        </figure>
+        <div class="quote">
+          <span class="caps">Our story</span>
+          <q>We drove to Baler on a whim, missed the sunrise, and decided to keep
+            missing things together.</q>
+          <p class="sign">Mika and Paolo</p>
+        </div>
+      </div>
+    </section>
 
-<section class="wrap" id="story">
-  <div class="story veil">
-    <figure class="panel" style="margin:0">
-      <img src="assets/img/wash-story.svg" alt="">
-      <span class="rim" aria-hidden="true"></span>
-      <span class="art" aria-hidden="true"><img src="assets/img/illustration.svg" alt=""></span>
-    </figure>
-    <div class="quote">
-      <span class="caps">Our story</span>
-      <q>We met on a Tuesday, in the rain, arguing over the last umbrella in the shop.
-        She kept it. He kept her.</q>
-      <p class="sign">Mika and Paolo</p>
-    </div>
-  </div>
-</section>
+    <div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
 
-<div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
+    <section class="wrap" id="day">
+      <div class="sec-head veil">
+        <span class="caps">The celebration</span>
+        <h2>How the day unfolds</h2>
+      </div>
+      <div class="veil"><div id="schedule"></div></div>
+      <div class="veil" style="margin-top:clamp(26px,4vh,44px)"><div id="notes"></div></div>
+    </section>
 
-<section class="wrap" id="day">
-  <div class="sec-head veil">
-    <span class="caps">The celebration</span>
-    <h2 class="serif">How the day unfolds</h2>
-  </div>
-  <div class="veil"><div id="schedule"></div></div>
-</section>
+    <div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
 
-<section class="wrap" id="details">
-  <div class="sec-head veil">
-    <span class="caps">Good to know</span>
-    <h2 class="serif">Three small things</h2>
-  </div>
-  <div class="veil"><div id="notes"></div></div>
-</section>
-
-<div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
-
-<section class="wrap" id="travel-sec">
-  <div class="sec-head veil">
-    <span class="caps">Getting to Tagaytay</span>
-    <h2 class="serif">Travel and rooms</h2>
-  </div>
-  <div class="veil">
+    <section class="wrap" id="travel-sec">
+      <div class="sec-head veil">
+        <span class="caps">Getting to Tagaytay</span>
+        <h2>Travel and rooms</h2>
+      </div>
+      <div class="veil">
 
     <div class="travel" id="travel"></div>
 
-  </div>
-</section>
+      </div>
+    </section>
 
-<div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
+    <div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
 
-<section class="wrap" id="rsvp">
-  <div class="sec-head veil">
-    <span class="caps">Kindly reply</span>
-    <h2 class="serif">Find your invitation</h2>
-    <p>Type your name and your whole party will appear.</p>
-  </div>
-  <div class="veil">
+    <section class="wrap" id="rsvp">
+      <div class="sec-head veil">
+        <span class="caps">Kindly reply</span>
+        <h2>Find your invitation</h2>
+        <p>Type your name and your whole party will appear.</p>
+      </div>
+      <div class="veil">
 
     <div class="card">
       <div id="step-search">
@@ -141,16 +127,16 @@
       </div>
     </div>
 
-  </div>
-</section>
+      </div>
+    </section>
 
-<section class="wrap" id="photos">
-  <div class="sec-head veil">
-    <span class="caps">The album</span>
-    <h2 class="serif">Photographs</h2>
-    <p>Ours so far, and yours from the day.</p>
-  </div>
-  <div class="veil">
+    <section class="wrap" id="photos">
+      <div class="sec-head veil">
+        <span class="caps">The album</span>
+        <h2>Photographs</h2>
+        <p>Ours so far, and yours from the day.</p>
+      </div>
+      <div class="veil">
 
     <div class="gallery" id="gallery"></div>
     <div class="lightbox" id="lightbox" hidden>
@@ -160,8 +146,8 @@
       <button class="lb-next" type="button" id="lb-next" aria-label="Next">&rsaquo;</button>
     </div>
 
-  </div>
-  <div class="veil" style="margin-top:clamp(22px,4vh,38px)">
+      </div>
+      <div class="veil" style="margin-top:clamp(22px,4vh,38px)">
 
     <div class="drop" id="drop" role="button" tabindex="0" aria-label="Choose photos or video">
       <strong>Add photos or video</strong>
@@ -175,32 +161,34 @@
     </div>
     <p class="status" id="upload-status" role="status" aria-live="polite"></p>
 
+      </div>
+    </section>
+
+    <div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
+
+    <section class="wrap" id="party">
+      <div class="sec-head veil">
+        <span class="caps">Standing with us</span>
+        <h2>The wedding party</h2>
+      </div>
+      <div class="veil">
+
+    <div class="party-list" id="party-list"></div>
+
+      </div>
+    </section>
+
+    <footer>
+      <span class="grass l" aria-hidden="true"><img src="assets/img/pampas-l-2.svg" alt=""></span>
+      <span class="grass r" aria-hidden="true"><img src="assets/img/pampas-r-2.svg" alt=""></span>
+      <div class="wrap">
+        <div class="seal veil"><span id="seal-mark">M</span></div>
+        <div class="names-sm veil" id="foot-names"></div>
+        <p class="caps veil" id="foot-line"></p>
+      </div>
+    </footer>
   </div>
-</section>
-
-<div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
-
-<section class="wrap" id="gifts">
-  <div class="sec-head veil">
-    <span class="caps">If you insist</span>
-    <h2 class="serif">Gifts</h2>
-  </div>
-  <div class="veil">
-
-    <div class="registry" id="registry"></div>
-
-  </div>
-</section>
-
-<footer>
-  <span class="foot-spray l" aria-hidden="true"><img src="assets/img/foot-spray-l.svg" alt=""></span>
-  <span class="foot-spray r" aria-hidden="true"><img src="assets/img/foot-spray-r.svg" alt=""></span>
-  <div class="wrap">
-    <div class="seal veil"><span id="seal-mark">M</span></div>
-    <div class="names-sm veil" id="foot-names"></div>
-    <p class="caps veil" id="foot-line"></p>
-  </div>
-</footer>
+</div>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/site.js"></script>
 </body>

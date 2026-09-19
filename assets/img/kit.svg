@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 230" width="42" height="60" fill="none" aria-hidden="true">
-<path d="M82 14 C126 14 152 50 152 92 C152 132 126 160 82 160 C38 160 12 132 12 92
-         C12 50 38 14 82 14 Z" fill="#1B47F0"/>
-<path d="M82 14 C126 14 152 50 152 92 C152 132 126 160 82 160 C38 160 12 132 12 92
-         C12 50 38 14 82 14 Z" stroke="#16181D" stroke-width="7" stroke-linejoin="round"/>
-<circle cx="44" cy="40" r="4.6" fill="#16181D"/><circle cx="64" cy="40" r="4.6" fill="#16181D"/><circle cx="84" cy="40" r="4.6" fill="#16181D"/><circle cx="104" cy="40" r="4.6" fill="#16181D"/><circle cx="44" cy="60" r="4.6" fill="#16181D"/><circle cx="64" cy="60" r="4.6" fill="#16181D"/><circle cx="84" cy="60" r="4.6" fill="#16181D"/><circle cx="104" cy="60" r="4.6" fill="#16181D"/><circle cx="44" cy="80" r="4.6" fill="#16181D"/><circle cx="64" cy="80" r="4.6" fill="#16181D"/><circle cx="84" cy="80" r="4.6" fill="#16181D"/><circle cx="104" cy="80" r="4.6" fill="#16181D"/><circle cx="44" cy="100" r="4.6" fill="#16181D"/><circle cx="64" cy="100" r="4.6" fill="#16181D"/><circle cx="84" cy="100" r="4.6" fill="#16181D"/><circle cx="104" cy="100" r="4.6" fill="#16181D"/>
-<path d="M70 160 L70 204 C70 214 78 220 88 220 C98 220 106 214 106 204 L106 160"
-      fill="#D6FF3D" stroke="#16181D" stroke-width="7" stroke-linejoin="round"/>
-</svg>

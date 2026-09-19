@@ -52,6 +52,7 @@
   <div class="booking">
 
     <div class="flow" id="flow">
+      <div class="lane">
       <ol class="steps" id="steps">
         <li class="step on" data-step="1"><span>1</span>Service</li>
         <li class="step" data-step="2"><span>2</span>Date</li>
@@ -118,6 +119,13 @@
         <p class="ref" id="done-ref"></p>
         <button class="btn ghost" type="button" id="again">Book another</button>
       </div>
+      </div>
+
+      <aside class="recap" id="recap" aria-label="Your booking so far">
+        <h4>Your booking</h4>
+        <dl id="recap-list"></dl>
+        <p class="recap-note" id="recap-note"></p>
+      </aside>
     </div>
 
   </div>

@@ -1,451 +1,282 @@
 (function () {
-  "use strict";
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
   };
-  var norm = function (s) {
-    return String(s || "").toLowerCase().normalize("NFD")
-      .replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9 ]/g, " ")
-      .replace(/\s+/g, " ").trim();
-  };
-  var set = function (id, val, html) {
-    var el = $(id);
-    if (!el) return;
-    if (html) el.innerHTML = val; else el.textContent = val;
-  };
-  var on = function (id, ev, fn) { var el = $(id); if (el) el.addEventListener(ev, fn); };
+  if (!$("flow")) return;
 
-  document.title = CONFIG.nameA + " and " + CONFIG.nameB;
-  set("name-a", CONFIG.nameA);
-  set("name-b", CONFIG.nameB);
-  set("hero-date", CONFIG.dateLabel);
-  set("hero-venue", CONFIG.venueShort);
-  set("hero-time", CONFIG.timeLabel);
-  set("brand", CONFIG.monogram);
-  set("foot-names", CONFIG.nameA + " and " + CONFIG.nameB);
-  set("foot-line", CONFIG.footerLine, true);
-  set("contact", CONFIG.contactLine);
-  set("deadline", CONFIG.rsvpDeadline);
+  var MONTHS = ["January", "February", "March", "April", "May", "June", "July",
+                "August", "September", "October", "November", "December"];
+  var state = { service: null, date: null, time: null, booked: [], month: null };
 
-  var target = new Date(CONFIG.dateISO);
-  var days = Math.ceil((target - new Date()) / 86400000);
-  set("countdown", days > 1 ? days + " days" : days === 1 ? "Tomorrow" : days === 0 ? "Today" : "");
-
-  if ($("facts")) {
-    $("facts").innerHTML = CONFIG.facts.map(function (f) {
-      return '<div class="fact"><span>' + esc(f.label) + '</span><b>' + esc(f.value) + '</b></div>';
-    }).join("");
+  function money(n) {
+    if (!n) return "Free";
+    return CONFIG.currency + Number(n).toLocaleString("en-PH");
   }
-  if ($("schedule")) {
-    $("schedule").innerHTML = CONFIG.schedule.map(function (s) {
-      return '<div class="slot"><span class="slot-time">' + esc(s.time) + '</span>' +
-        '<span class="slot-what">' + esc(s.what) + '</span></div>';
-    }).join("");
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function iso(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+  function fromIso(s) {
+    var b = s.split("-");
+    return new Date(Number(b[0]), Number(b[1]) - 1, Number(b[2]));
   }
-  if ($("notes")) {
-    $("notes").innerHTML = CONFIG.notes.map(function (n) {
-      return '<div class="note"><h3>' + esc(n.title) + '</h3><p>' + esc(n.body) + '</p></div>';
-    }).join("");
+  function mins(t) {
+    var b = String(t).split(":");
+    return Number(b[0]) * 60 + Number(b[1]);
+  }
+  function clock(m) {
+    var h = Math.floor(m / 60), n = m % 60;
+    var ap = h < 12 ? "AM" : "PM";
+    var hh = h % 12 === 0 ? 12 : h % 12;
+    return hh + ":" + pad(n) + " " + ap;
+  }
+  function longDate(s) {
+    var d = fromIso(s);
+    return d.getDate() + " " + MONTHS[d.getMonth()] + " " + d.getFullYear();
+  }
+  function hoursFor(s) {
+    var key = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"][fromIso(s).getDay()];
+    return CONFIG.hours[key] || null;
+  }
+  function closed(s) {
+    return (CONFIG.closedDates || []).indexOf(s) !== -1 || !hoursFor(s);
   }
 
-  var store = {
-    send: function (payload) {
-      if (!CONFIG.endpoint) {
-        return new Promise(function (r) { setTimeout(function () { r({ ok: true, preview: true }); }, 420); });
-      }
-      return fetch(CONFIG.endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(payload)
-      }).then(function (res) {
-        if (!res.ok) throw new Error("http " + res.status);
-        return res.json();
+  function freeSlots(dateStr, service) {
+    var span = hoursFor(dateStr);
+    if (!span) return [];
+    var step = CONFIG.slotMinutes || 30;
+    var need = service.minutes;
+    var open = mins(span.open), shut = mins(span.close);
+    var now = new Date();
+    var lead = (CONFIG.leadHours || 0) * 60;
+    var today = iso(now);
+    var nowMins = now.getHours() * 60 + now.getMinutes();
+    var taken = state.booked.filter(function (b) { return b.date === dateStr; });
+    var out = [];
+    for (var t = open; t + need <= shut; t += step) {
+      if (dateStr === today && t < nowMins + lead) continue;
+      if (dateStr < today) continue;
+      var clash = taken.some(function (b) {
+        if (service.staff && b.staff && b.staff !== service.staff) return false;
+        var bs = mins(b.time);
+        return t < bs + b.minutes && bs < t + need;
       });
+      if (!clash) out.push(t);
     }
-  };
-
-  var party = null;
-
-  function matches(term) {
-    var n = norm(term);
-    if (n.length < 2) return [];
-    return CONFIG.guests.filter(function (g) {
-      return norm(g.party).indexOf(n) !== -1 ||
-        g.members.some(function (m) { return norm(m).indexOf(n) !== -1; });
-    }).slice(0, 8);
+    return out;
   }
 
-  function showHits(list, term) {
-    var hits = $("hits"), status = $("search-status");
-    if (!hits) return;
-    if (!term || norm(term).length < 2) {
-      hits.innerHTML = "";
-      if (status) { status.textContent = ""; status.className = "status"; }
-      return;
-    }
-    if (!list.length) {
-      hits.innerHTML = "";
-      if (status) {
-        status.textContent = "No invitation under that name. Try a surname.";
-        status.className = "status bad";
-      }
-      return;
-    }
-    if (status) { status.textContent = ""; status.className = "status"; }
-    hits.innerHTML = list.map(function (g) {
-      return '<button type="button" class="hit" data-id="' + esc(g.id) + '">' +
-        '<b>' + esc(g.party) + '</b><small>' + esc(g.members.join(", ")) + '</small></button>';
-    }).join("");
-  }
-
-  function openParty(g) {
-    party = g;
-    set("party-label", g.party);
-    $("guest-list").innerHTML = g.members.map(function (m, i) {
-      return '<div class="guest"><div class="guest-name">' + esc(m) + '</div>' +
-        '<div class="opts">' +
-        '<label class="opt"><input type="radio" name="att' + i + '" value="yes" checked><span>Joyfully accepts</span></label>' +
-        '<label class="opt"><input type="radio" name="att' + i + '" value="no"><span>Respectfully declines</span></label>' +
-        '</div>' +
-        '<div class="meal-wrap" data-meal="' + i + '">' +
-        '<label class="lbl" for="meal' + i + '">Dinner</label>' +
-        '<select id="meal' + i + '">' + CONFIG.meals.map(function (x) {
-          return '<option>' + esc(x) + '</option>';
-        }).join("") + '</select></div></div>';
-    }).join("");
-
-    g.members.forEach(function (m, i) {
-      Array.prototype.forEach.call(document.getElementsByName("att" + i), function (r) {
-        r.addEventListener("change", function () {
-          var wrap = document.querySelector('[data-meal="' + i + '"]');
-          if (wrap) wrap.hidden = document.querySelector('input[name="att' + i + '"]:checked').value === "no";
-        });
-      });
+  function show(n) {
+    [1, 2, 3, 4, 5].forEach(function (i) {
+      var p = $("pane-" + i);
+      if (p) p.hidden = i !== n;
     });
-
-    $("step-search").hidden = true;
-    $("step-reply").hidden = false;
-    $("step-done").hidden = true;
+    Array.prototype.forEach.call(document.querySelectorAll(".step"), function (el) {
+      var i = Number(el.dataset.step);
+      el.className = "step" + (i === n ? " on" : (i < n ? " done" : ""));
+    });
+    $("steps").hidden = n === 5;
+    var top = $("flow").getBoundingClientRect().top + window.scrollY - 80;
+    if (window.scrollY > top) window.scrollTo({ top: top, behavior: "smooth" });
   }
 
-  function resetToSearch() {
-    party = null;
-    if ($("step-reply")) $("step-reply").hidden = true;
-    if ($("step-done")) $("step-done").hidden = true;
-    if ($("step-search")) $("step-search").hidden = false;
-    if ($("q")) { $("q").value = ""; $("q").focus(); }
-    if ($("hits")) $("hits").innerHTML = "";
-    set("search-status", "");
-    set("reply-status", "");
+  function summary() {
+    var bits = [];
+    if (state.service) bits.push(esc(state.service.name) + ", " + state.service.minutes +
+      " min, " + money(state.service.price));
+    if (state.date) bits.push(longDate(state.date));
+    if (state.time !== null) bits.push(clock(state.time));
+    return bits.join("  &middot;  ");
+  }
+  function paintSummary() {
+    ["sum-2", "sum-3", "sum-4"].forEach(function (id) {
+      if ($(id)) $(id).innerHTML = summary();
+    });
   }
 
-  on("q", "input", function (e) { showHits(matches(e.target.value), e.target.value); });
-  on("q", "keydown", function (e) {
-    if (e.key === "Enter") { e.preventDefault(); if ($("find-btn")) $("find-btn").click(); }
-  });
-  on("find-btn", "click", function () {
-    var term = $("q").value, list = matches(term);
-    if (list.length === 1) { openParty(list[0]); return; }
-    showHits(list, term);
-  });
-  on("hits", "click", function (e) {
-    var b = e.target.closest(".hit");
+  $("services").innerHTML = CONFIG.services.map(function (s, i) {
+    return '<button type="button" class="pick" data-i="' + i + '">' +
+      '<b>' + esc(s.name) + '</b>' +
+      (s.blurb ? '<small>' + esc(s.blurb) + '</small>' : '') +
+      '<span class="meta">' + s.minutes + ' min<i>' + money(s.price) + '</i></span></button>';
+  }).join("");
+
+  function drawMonth() {
+    var first = new Date(state.month.getFullYear(), state.month.getMonth(), 1);
+    var start = (first.getDay() + 6) % 7;
+    var total = new Date(state.month.getFullYear(), state.month.getMonth() + 1, 0).getDate();
+    $("month").textContent = MONTHS[state.month.getMonth()] + " " + state.month.getFullYear();
+    var today = iso(new Date());
+    var horizon = new Date();
+    horizon.setDate(horizon.getDate() + (CONFIG.bookAheadDays || 60));
+    var cells = "";
+    for (var b = 0; b < start; b++) cells += '<span class="cell blank"></span>';
+    for (var d = 1; d <= total; d++) {
+      var s = iso(new Date(state.month.getFullYear(), state.month.getMonth(), d));
+      var off = s < today || s > iso(horizon) || closed(s) ||
+        freeSlots(s, state.service).length === 0;
+      cells += '<button type="button" class="cell' + (off ? " off" : "") +
+        (s === state.date ? " on" : "") + '"' + (off ? " disabled" : "") +
+        ' data-date="' + s + '">' + d + '</button>';
+    }
+    $("days").innerHTML = cells;
+    var canPrev = state.month > new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+    $("prev").disabled = !canPrev;
+  }
+
+  function drawSlots() {
+    var list = freeSlots(state.date, state.service);
+    $("slots").innerHTML = list.map(function (t) {
+      return '<button type="button" class="slot" data-t="' + t + '">' + clock(t) + '</button>';
+    }).join("");
+    $("slot-note").textContent = list.length
+      ? list.length + " open, each " + state.service.minutes + " minutes"
+      : "Nothing left on this day. Pick another date.";
+  }
+
+  function loadBooked() {
+    if (!CONFIG.endpoint) return Promise.resolve();
+    return fetch(CONFIG.endpoint + (CONFIG.endpoint.indexOf("?") === -1 ? "?" : "&") + "what=slots")
+      .then(function (r) { return r.json(); })
+      .then(function (out) { state.booked = out.booked || []; })
+      .catch(function () { state.booked = []; });
+  }
+
+  $("services").addEventListener("click", function (e) {
+    var b = e.target.closest(".pick");
     if (!b) return;
-    var g = CONFIG.guests.filter(function (x) { return x.id === b.dataset.id; })[0];
-    if (g) openParty(g);
+    state.service = CONFIG.services[Number(b.dataset.i)];
+    state.date = null;
+    state.time = null;
+    state.month = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+    paintSummary();
+    loadBooked().then(function () { drawMonth(); show(2); });
   });
-  on("back-btn", "click", resetToSearch);
-  on("another-btn", "click", resetToSearch);
 
-  on("step-reply", "submit", function (e) {
+  $("prev").addEventListener("click", function () {
+    state.month = new Date(state.month.getFullYear(), state.month.getMonth() - 1, 1);
+    drawMonth();
+  });
+  $("next").addEventListener("click", function () {
+    state.month = new Date(state.month.getFullYear(), state.month.getMonth() + 1, 1);
+    drawMonth();
+  });
+  $("days").addEventListener("click", function (e) {
+    var b = e.target.closest(".cell");
+    if (!b || b.disabled || !b.dataset.date) return;
+    state.date = b.dataset.date;
+    state.time = null;
+    paintSummary();
+    drawSlots();
+    show(3);
+  });
+  $("slots").addEventListener("click", function (e) {
+    var b = e.target.closest(".slot");
+    if (!b) return;
+    state.time = Number(b.dataset.t);
+    paintSummary();
+    show(4);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("[data-back]"), function (b) {
+    b.addEventListener("click", function () { show(Number(b.dataset.back)); });
+  });
+
+  $("pane-4").addEventListener("submit", function (e) {
     e.preventDefault();
-    if (!party) return;
-    var btn = $("send-btn"), status = $("reply-status");
-    var people = party.members.map(function (m, i) {
-      var going = document.querySelector('input[name="att' + i + '"]:checked').value === "yes";
-      return { name: m, attending: going, meal: going ? $("meal" + i).value : "" };
-    });
+    var name = $("bk-name").value.trim();
+    var phone = $("bk-phone").value.trim();
+    var status = $("book-status");
+    if (!name || !phone) {
+      status.textContent = "Your name and mobile number are needed.";
+      status.className = "status bad";
+      return;
+    }
+    var btn = $("book-btn");
+    btn.disabled = true;
+    status.textContent = "Holding your slot";
+    status.className = "status";
+
     var payload = {
-      kind: "rsvp",
-      partyId: party.id,
-      party: party.party,
-      people: people,
-      song: $("song") ? $("song").value.trim() : "",
-      note: $("note") ? $("note").value.trim() : "",
-      submittedAt: new Date().toISOString()
+      kind: "booking",
+      name: name,
+      phone: phone,
+      email: $("bk-email").value.trim(),
+      service: state.service.name,
+      staff: state.service.staff || "",
+      price: state.service.price,
+      minutes: state.service.minutes,
+      date: state.date,
+      time: pad(Math.floor(state.time / 60)) + ":" + pad(state.time % 60),
+      notes: $("bk-notes").value.trim()
     };
-    if (btn) btn.disabled = true;
-    if (status) { status.textContent = "Sending"; status.className = "status"; }
 
-    store.send(payload).then(function (out) {
-      var going = people.filter(function (p) { return p.attending; }).length;
-      set("done-title", going ? "See you there" : "Thank you for telling us");
-      var body = going
-        ? going + (going === 1 ? " seat is" : " seats are") + " reserved for " + party.party + "."
-        : "We will miss you.";
-      if (out && out.preview) body += " This is a preview, so nothing was stored.";
-      set("done-body", body);
-      $("step-reply").hidden = true;
-      $("step-done").hidden = false;
-    }).catch(function () {
-      if (status) {
-        status.textContent = "That did not send. Please try again.";
-        status.className = "status bad";
-      }
-    }).then(function () { if (btn) btn.disabled = false; });
-  });
-
-  var queue = [], drop = $("drop"), input = $("file-input");
-  if (drop && input) {
-    var human = function (b) {
-      return b > 1048576 ? (b / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(b / 1024)) + " KB";
-    };
-    var renderQueue = function () {
-      $("queue").innerHTML = queue.map(function (f, i) {
-        return '<div class="tile">' +
-          (f.kind === "video" ? '<video src="' + f.url + '" muted playsinline></video>'
-                              : '<img src="' + f.url + '" alt="">') +
-          '<span class="tag">' + esc(human(f.size)) + '</span>' +
-          '<button class="kill" type="button" data-i="' + i + '" aria-label="Remove">&times;</button></div>';
-      }).join("");
-      if ($("upload-actions")) $("upload-actions").hidden = queue.length === 0;
-    };
-    var addFiles = function (files) {
-      var skipped = 0;
-      Array.prototype.forEach.call(files, function (file) {
-        if (queue.length >= CONFIG.maxUploadFiles) { skipped++; return; }
-        if (file.size > CONFIG.maxUploadMB * 1048576) { skipped++; return; }
-        if (!/^image\/|^video\//.test(file.type)) { skipped++; return; }
-        queue.push({
-          file: file, url: URL.createObjectURL(file),
-          kind: file.type.indexOf("video") === 0 ? "video" : "image", size: file.size
+    var send = CONFIG.endpoint
+      ? fetch(CONFIG.endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        }).then(function (r) { return r.json(); })
+      : new Promise(function (r) {
+          setTimeout(function () { r({ ok: true, preview: true, reference: "PREVIEW-0000" }); }, 500);
         });
-      });
-      var st = $("upload-status");
-      if (st) {
-        st.textContent = skipped ? skipped + " skipped. Photos and video only, under " + CONFIG.maxUploadMB + " MB." : "";
-        st.className = skipped ? "status bad" : "status";
-      }
-      renderQueue();
-    };
-    drop.addEventListener("click", function () { input.click(); });
-    drop.addEventListener("keydown", function (e) {
-      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); }
-    });
-    input.addEventListener("change", function (e) { addFiles(e.target.files); input.value = ""; });
-    ["dragenter", "dragover"].forEach(function (ev) {
-      drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add("over"); });
-    });
-    ["dragleave", "drop"].forEach(function (ev) {
-      drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove("over"); });
-    });
-    drop.addEventListener("drop", function (e) {
-      if (e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files);
-    });
-    on("queue", "click", function (e) {
-      var b = e.target.closest(".kill");
-      if (!b) return;
-      var i = parseInt(b.dataset.i, 10);
-      URL.revokeObjectURL(queue[i].url);
-      queue.splice(i, 1);
-      renderQueue();
-    });
-    on("clear-btn", "click", function () {
-      queue.forEach(function (f) { URL.revokeObjectURL(f.url); });
-      queue.length = 0;
-      set("upload-status", "");
-      renderQueue();
-    });
-    var readB64 = function (file) {
-      return new Promise(function (resolve, reject) {
-        var r = new FileReader();
-        r.onload = function () { resolve(String(r.result).split(",")[1] || ""); };
-        r.onerror = reject;
-        r.readAsDataURL(file);
-      });
-    };
-    on("upload-btn", "click", function () {
-      if (!queue.length) return;
-      var btn = $("upload-btn"), st = $("upload-status");
-      btn.disabled = true;
-      if (!CONFIG.endpoint) {
-        st.textContent = "Preview only. On the live site these reach the couple.";
-        st.className = "status bad";
+
+    send.then(function (out) {
+      if (!out.ok && out.taken) {
+        status.textContent = "Someone booked that minute before you. Pick another time.";
+        status.className = "status bad";
         btn.disabled = false;
+        loadBooked().then(function () { drawSlots(); show(3); });
         return;
       }
-      var done = 0;
-      var next = function () {
-        if (done >= queue.length) {
-          queue.forEach(function (f) { URL.revokeObjectURL(f.url); });
-          queue.length = 0;
-          renderQueue();
-          st.textContent = "Sent. Thank you.";
-          st.className = "status ok";
-          btn.disabled = false;
-          return;
-        }
-        var item = queue[done];
-        st.textContent = "Sending " + (done + 1) + " of " + queue.length;
-        st.className = "status";
-        readB64(item.file).then(function (b64) {
-          return fetch(CONFIG.endpoint, {
-            method: "POST",
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify({
-              kind: "upload", filename: item.file.name,
-              mimeType: item.file.type, data: b64,
-              submittedAt: new Date().toISOString()
-            })
-          });
-        }).then(function (res) {
-          if (!res.ok) throw new Error("http");
-          done++;
-          next();
-        }).catch(function () {
-          st.textContent = done + " sent before a problem. Please retry the rest.";
-          st.className = "status bad";
-          btn.disabled = false;
-        });
-      };
-      next();
-    });
-  }
-})();
-
-(function () {
-  var $ = function (id) { return document.getElementById(id); };
-  var esc = function (s) {
-    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
-      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
-    });
-  };
-
-  var photos = (CONFIG.gallery && CONFIG.gallery.length) ? CONFIG.gallery : [];
-  var slots = CONFIG.gallerySlots || 8;
-
-  if ($("gallery")) {
-    var html = "";
-    if (photos.length) {
-      photos.forEach(function (p, i) {
-        var src = typeof p === "string" ? p : p.src;
-        var cap = typeof p === "string" ? "" : (p.caption || "");
-        var wide = typeof p === "object" && p.wide ? " wide" : "";
-        html += '<button type="button" class="shot' + wide + '" data-i="' + i + '">' +
-          '<img src="' + esc(src) + '" alt="' + esc(cap) + '" loading="lazy"></button>';
-      });
-    } else {
-      for (var s = 0; s < slots; s++) {
-        html += '<div class="shot empty"><span>Photo ' + (s + 1) + '</span></div>';
-      }
-    }
-    $("gallery").innerHTML = html;
-  }
-
-  var at = 0;
-  function show(i) {
-    if (!photos.length) return;
-    at = (i + photos.length) % photos.length;
-    var p = photos[at];
-    $("lb-img").src = typeof p === "string" ? p : p.src;
-    $("lb-cap").textContent = typeof p === "string" ? "" : (p.caption || "");
-    $("lightbox").hidden = false;
-    document.body.style.overflow = "hidden";
-  }
-  function hide() {
-    $("lightbox").hidden = true;
-    document.body.style.overflow = "";
-  }
-  if ($("gallery") && $("lightbox")) {
-    $("gallery").addEventListener("click", function (e) {
-      var b = e.target.closest(".shot");
-      if (b && !b.classList.contains("empty")) show(parseInt(b.dataset.i, 10));
-    });
-    $("lb-close").addEventListener("click", hide);
-    $("lb-prev").addEventListener("click", function () { show(at - 1); });
-    $("lb-next").addEventListener("click", function () { show(at + 1); });
-    $("lightbox").addEventListener("click", function (e) {
-      if (e.target === $("lightbox")) hide();
-    });
-    document.addEventListener("keydown", function (e) {
-      if ($("lightbox").hidden) return;
-      if (e.key === "Escape") hide();
-      if (e.key === "ArrowLeft") show(at - 1);
-      if (e.key === "ArrowRight") show(at + 1);
-    });
-  }
-
-  if ($("travel") && CONFIG.travel) {
-    $("travel").innerHTML = CONFIG.travel.map(function (t) {
-      return '<div class="trip"><h3>' + esc(t.title) + '</h3><p>' + esc(t.body) + '</p>' +
-        (t.meta ? '<span class="meta">' + esc(t.meta) + '</span>' : '') + '</div>';
-    }).join("");
-  }
-
-  if ($("faq") && CONFIG.faq) {
-    $("faq").innerHTML = CONFIG.faq.map(function (f) {
-      return '<details><summary>' + esc(f.q) + '</summary><p>' + esc(f.a) + '</p></details>';
-    }).join("");
-  }
-
-  if ($("party-list") && CONFIG.weddingParty) {
-    $("party-list").innerHTML = CONFIG.weddingParty.map(function (w) {
-      return '<div class="who"><span class="role">' + esc(w.role) + '</span>' +
-        '<span class="name">' + esc(w.name) + '</span></div>';
-    }).join("");
-  }
-
-  if ($("registry") && CONFIG.registry) {
-    $("registry").innerHTML = '<p>' + esc(CONFIG.registry.note) + '</p><div class="links">' +
-      (CONFIG.registry.links || []).map(function (l) {
-        return '<a class="btn ghost" href="' + esc(l.url) + '" target="_blank" rel="noopener">' +
-          esc(l.label) + '</a>';
-      }).join("") + '</div>';
-  }
-})();
-
-(function () {
-  var links = Array.prototype.slice.call(document.querySelectorAll(".aside .nav a"));
-  if (!links.length || !("IntersectionObserver" in window)) return;
-  var byId = {};
-  links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      var a = byId[e.target.id];
-      if (a && e.isIntersecting) {
-        links.forEach(function (x) { x.classList.remove("on"); });
-        a.classList.add("on");
-      }
-    });
-  }, { rootMargin: "-45% 0px -45% 0px" });
-  Object.keys(byId).forEach(function (id) {
-    var el = document.getElementById(id);
-    if (el) io.observe(el);
+      if (!out.ok) throw new Error(out.error || "Failed");
+      $("done-head").textContent = "You are booked";
+      $("done-detail").innerHTML = summary() + "<br>" + esc(CONFIG.address);
+      $("done-ref").textContent = out.preview
+        ? "This is a preview, so nothing was stored."
+        : "Reference " + out.reference;
+      show(5);
+    }).catch(function () {
+      status.textContent = "That did not go through. Please try again, or call us.";
+      status.className = "status bad";
+    }).then(function () { btn.disabled = false; });
   });
+
+  $("again").addEventListener("click", function () {
+    state = { service: null, date: null, time: null, booked: state.booked, month: null };
+    $("pane-4").reset();
+    $("book-status").textContent = "";
+    show(1);
+  });
+
+  show(1);
 })();
 
 (function () {
-  var els = document.querySelectorAll(".veil");
-  var showAll = function () {
-    Array.prototype.forEach.call(els, function (el) { el.classList.add("seen"); });
-  };
-  if (!("IntersectionObserver" in window) ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    showAll();
-    return;
+  var box = document.getElementById("peek");
+  if (!box) return;
+  var MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var pad = function (n) { return (n < 10 ? "0" : "") + n; };
+  var rows = [];
+  var d = new Date();
+  var guard = 0;
+  while (rows.length < 4 && guard < 30) {
+    var key = ["sun","mon","tue","wed","thu","fri","sat"][d.getDay()];
+    var span = CONFIG.hours[key];
+    if (span) {
+      rows.push({
+        label: d.getDate() + " " + MON[d.getMonth()],
+        text: span.open + " to " + span.close,
+        full: false
+      });
+    }
+    d.setDate(d.getDate() + 1);
+    guard++;
   }
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) { e.target.classList.add("seen"); io.unobserve(e.target); }
-    });
-  }, { rootMargin: "0px 0px -6% 0px", threshold: 0.05 });
-  Array.prototype.forEach.call(els, function (el) { io.observe(el); });
-  setTimeout(showAll, 3500);
-})();
-(function () {
-  var s = document.getElementById("seal-mark");
-  if (s) s.textContent = CONFIG.nameA.charAt(0) + CONFIG.nameB.charAt(0).toLowerCase();
+  box.innerHTML = rows.map(function (r) {
+    return '<div class="row"><b>' + r.label + '</b><span>' + r.text + '</span>' +
+      '<span class="tag' + (r.full ? ' full' : '') + '">' +
+      (r.full ? 'Full' : 'Open') + '</span></div>';
+  }).join("");
 })();

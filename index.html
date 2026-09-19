@@ -3,192 +3,157 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Sol Wedding</title>
+<title>Courtside Wedding</title>
 <meta name="description" content="Wedding details and RSVP.">
 <link rel="stylesheet" href="assets/css/fonts.css">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-<div class="frame-grid">
-  <aside class="aside">
-    <span class="sun" aria-hidden="true"><img src="assets/img/sun-arc.svg" alt=""></span>
-    <span class="grass l" aria-hidden="true"><img src="assets/img/pampas-l.svg" alt=""></span>
-    <span class="grass r" aria-hidden="true"><img src="assets/img/pampas-r.svg" alt=""></span>
-    <div class="plate rise d1">
-      <img src="assets/img/wash-hero.svg" alt="">
-      <span class="rim" aria-hidden="true"></span>
-      <div class="inner">
-        <p class="caps top rise d2">Together with</p>
-        <h1 class="names">
-          <span class="n script rise d3" id="name-a"></span>
-          <span class="amp rise d4">and</span>
-          <span class="n script rise d5" id="name-b"></span>
-        </h1>
-      </div>
-    </div>
-    <p class="aside-meta rise d6" id="hero-date"></p>
-    <p class="aside-venue rise d6" id="hero-venue"></p>
-    <p class="count rise d6" id="countdown"></p>
-    <nav class="nav">
-      <a href="#story">Our story</a>
-      <a href="#day">The day</a>
-      <a href="#travel-sec">Getting there</a>
-      <a href="#rsvp">Reply</a>
-      <a href="#photos">Album</a>
-      <a href="#party">Wedding party</a>
+<header class="top">
+  <div class="wrap top-in">
+    <span class="logo"><i></i>Courtside Pasig</span>
+    <nav>
+      <a href="#book">Book</a>
+      <a href="#why">Why us</a>
+      <a href="#hours">Hours</a>
+      <a href="#faq">Questions</a>
     </nav>
-  </aside>
+    <a class="btn" href="#book">Book now</a>
+  </div>
+</header>
 
-  <div class="main">
-    <section class="wrap" id="story">
-      <div class="story veil">
-        <figure class="panel" style="margin:0">
-          <img src="assets/img/wash-story.svg" alt="">
-          <span class="rim" aria-hidden="true"></span>
-          <span class="art" aria-hidden="true"><img src="assets/img/illustration.svg" alt=""></span>
-        </figure>
-        <div class="quote">
-          <span class="caps">Our story</span>
-          <q>We drove to Baler on a whim, missed the sunrise, and decided to keep
-            missing things together.</q>
-          <p class="sign">Mika and Paolo</p>
+<section class="hero">
+  <span class="blob b1" aria-hidden="true"></span>
+  <span class="blob b2" aria-hidden="true"></span>
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Rosario, Pasig</p>
+      <h1>Book a court in about thirty seconds</h1>
+      <p class="lede">Four covered courts off Ortigas Avenue. Lights included, balls for hire, and the slot is yours the moment you confirm.</p>
+      <div class="btn-row">
+        <a class="btn" href="#book">See open times</a>
+        <a class="btn ghost" href="#why">What makes us different</a>
+      </div>
+      <div class="trust"><div><b>4</b><span>Covered courts</span></div><div><b>6am</b><span>Doors open</span></div><div><b>0</b><span>Booking fee</span></div></div>
+    </div>
+    <div class="panel next">
+      <h3>Next available</h3>
+      <div id="peek"></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="book">
+  <div class="sec-head">
+    <p class="eyebrow">Booking</p>
+    <h2>Pick a treatment, then a time</h2>
+    <p>Times already taken are hidden, so anything you can tap is genuinely free.</p>
+  </div>
+  <div class="booking">
+
+    <div class="flow" id="flow">
+      <ol class="steps" id="steps">
+        <li class="step on" data-step="1"><span>1</span>Service</li>
+        <li class="step" data-step="2"><span>2</span>Date</li>
+        <li class="step" data-step="3"><span>3</span>Time</li>
+        <li class="step" data-step="4"><span>4</span>Details</li>
+      </ol>
+
+      <div class="pane" id="pane-1">
+        <div class="picks" id="services"></div>
+      </div>
+
+      <div class="pane" id="pane-2" hidden>
+        <p class="chosen" id="sum-2"></p>
+        <div class="cal">
+          <div class="cal-head">
+            <button class="nav" type="button" id="prev" aria-label="Previous month">&lsaquo;</button>
+            <b id="month"></b>
+            <button class="nav" type="button" id="next" aria-label="Next month">&rsaquo;</button>
+          </div>
+          <div class="dow"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div>
+          <div class="grid" id="days"></div>
         </div>
-      </div>
-    </section>
-
-    <div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
-
-    <section class="wrap" id="day">
-      <div class="sec-head veil">
-        <span class="caps">The celebration</span>
-        <h2>How the day unfolds</h2>
-      </div>
-      <div class="veil"><div id="schedule"></div></div>
-      <div class="veil" style="margin-top:clamp(26px,4vh,44px)"><div id="notes"></div></div>
-    </section>
-
-    <div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
-
-    <section class="wrap" id="travel-sec">
-      <div class="sec-head veil">
-        <span class="caps">Getting to Tagaytay</span>
-        <h2>Travel and rooms</h2>
-      </div>
-      <div class="veil">
-
-    <div class="travel" id="travel"></div>
-
-      </div>
-    </section>
-
-    <div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
-
-    <section class="wrap" id="rsvp">
-      <div class="sec-head veil">
-        <span class="caps">Kindly reply</span>
-        <h2>Find your invitation</h2>
-        <p>Type your name and your whole party will appear.</p>
-      </div>
-      <div class="veil">
-
-    <div class="card">
-      <div id="step-search">
-        <label class="lbl" for="q">Your name</label>
-        <div class="search-row">
-          <input type="search" id="q" autocomplete="name" placeholder="First or last name" enterkeyhint="search">
-          <button class="btn" type="button" id="find-btn">Find</button>
-        </div>
-        <div class="hits" id="hits"></div>
-        <p class="status" id="search-status" role="status" aria-live="polite"></p>
+        <button class="btn ghost" type="button" data-back="1">Back</button>
       </div>
 
-      <form id="step-reply" hidden novalidate>
-        <p class="party" id="party-label"></p>
-        <div id="guest-list"></div>
+      <div class="pane" id="pane-3" hidden>
+        <p class="chosen" id="sum-3"></p>
+        <div class="slots" id="slots"></div>
+        <p class="note" id="slot-note"></p>
+        <button class="btn ghost" type="button" data-back="2">Back</button>
+      </div>
+
+      <form class="pane" id="pane-4" hidden novalidate>
+        <p class="chosen" id="sum-4"></p>
         <div class="field">
-          <label class="lbl" for="song">Song request</label>
-          <input type="text" id="song" placeholder="Optional">
+          <label class="lbl" for="bk-name">Your name</label>
+          <input type="text" id="bk-name" autocomplete="name" required>
+        </div>
+        <div class="two">
+          <div class="field">
+            <label class="lbl" for="bk-phone">Mobile</label>
+            <input type="tel" id="bk-phone" autocomplete="tel" required>
+          </div>
+          <div class="field">
+            <label class="lbl" for="bk-email">Email</label>
+            <input type="email" id="bk-email" autocomplete="email">
+          </div>
         </div>
         <div class="field">
-          <label class="lbl" for="note">A note</label>
-          <textarea id="note" placeholder="Optional"></textarea>
+          <label class="lbl" for="bk-notes">Anything we should know</label>
+          <textarea id="bk-notes" placeholder="Optional"></textarea>
         </div>
-        <div class="search-row">
-          <button class="btn" type="submit" id="send-btn">Send</button>
-          <button class="btn ghost" type="button" id="back-btn">Search again</button>
+        <div class="btn-row">
+          <button class="btn" type="submit" id="book-btn">Confirm booking</button>
+          <button class="btn ghost" type="button" data-back="3">Back</button>
         </div>
-        <p class="status" id="reply-status" role="status" aria-live="polite"></p>
+        <p class="status" id="book-status" role="status" aria-live="polite"></p>
       </form>
 
-      <div id="step-done" hidden class="done">
-        <h3 id="done-title"></h3>
-        <p id="done-body"></p>
-        <button class="btn ghost" type="button" id="another-btn">Reply for another</button>
+      <div class="pane done" id="pane-5" hidden>
+        <div class="tick" aria-hidden="true"></div>
+        <h3 id="done-head"></h3>
+        <p id="done-detail"></p>
+        <p class="ref" id="done-ref"></p>
+        <button class="btn ghost" type="button" id="again">Book another</button>
       </div>
     </div>
 
-      </div>
-    </section>
-
-    <section class="wrap" id="photos">
-      <div class="sec-head veil">
-        <span class="caps">The album</span>
-        <h2>Photographs</h2>
-        <p>Ours so far, and yours from the day.</p>
-      </div>
-      <div class="veil">
-
-    <div class="gallery" id="gallery"></div>
-    <div class="lightbox" id="lightbox" hidden>
-      <button class="lb-close" type="button" id="lb-close" aria-label="Close">&times;</button>
-      <button class="lb-prev" type="button" id="lb-prev" aria-label="Previous">&lsaquo;</button>
-      <figure class="lb-stage"><img id="lb-img" alt=""><figcaption id="lb-cap"></figcaption></figure>
-      <button class="lb-next" type="button" id="lb-next" aria-label="Next">&rsaquo;</button>
-    </div>
-
-      </div>
-      <div class="veil" style="margin-top:clamp(22px,4vh,38px)">
-
-    <div class="drop" id="drop" role="button" tabindex="0" aria-label="Choose photos or video">
-      <strong>Add photos or video</strong>
-      <span>Straight from your phone</span>
-      <input type="file" id="file-input" accept="image/*,video/*" multiple hidden>
-    </div>
-    <div class="queue" id="queue"></div>
-    <div class="search-row" id="upload-actions" hidden>
-      <button class="btn" type="button" id="upload-btn">Send</button>
-      <button class="btn ghost" type="button" id="clear-btn">Clear</button>
-    </div>
-    <p class="status" id="upload-status" role="status" aria-live="polite"></p>
-
-      </div>
-    </section>
-
-    <div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
-
-    <section class="wrap" id="party">
-      <div class="sec-head veil">
-        <span class="caps">Standing with us</span>
-        <h2>The wedding party</h2>
-      </div>
-      <div class="veil">
-
-    <div class="party-list" id="party-list"></div>
-
-      </div>
-    </section>
-
-    <footer>
-      <span class="grass l" aria-hidden="true"><img src="assets/img/pampas-l-2.svg" alt=""></span>
-      <span class="grass r" aria-hidden="true"><img src="assets/img/pampas-r-2.svg" alt=""></span>
-      <div class="wrap">
-        <div class="seal veil"><span id="seal-mark">M</span></div>
-        <div class="names-sm veil" id="foot-names"></div>
-        <p class="caps veil" id="foot-line"></p>
-      </div>
-    </footer>
   </div>
-</div>
+</section>
+
+<section class="wrap" id="why">
+  <div class="sec-head">
+    <p class="eyebrow">Why us</p>
+    <h2>Three things we hold to</h2>
+  </div>
+  <div class="cards"><div class="cardy"><i></i><h3>Lights are included</h3><p>No extra charge after sundown. The price you see covers the lights for the whole booking.</p></div><div class="cardy"><i></i><h3>Rain does not count</h3><p>Every court is covered. If we ever close a court, your booking moves free of charge.</p></div><div class="cardy"><i></i><h3>Pay at the desk</h3><p>Nothing is charged online. Settle in cash, card or GCash when you arrive.</p></div></div>
+</section>
+
+<section class="wrap" id="hours">
+  <div class="sec-head">
+    <p class="eyebrow">Opening hours</p>
+    <h2>When we are in</h2>
+  </div>
+  <div class="hours"><div class="day"><b>Monday</b><span>06:00 to 22:00</span></div><div class="day"><b>Tuesday</b><span>06:00 to 22:00</span></div><div class="day"><b>Wednesday</b><span>06:00 to 22:00</span></div><div class="day"><b>Thursday</b><span>06:00 to 22:00</span></div><div class="day"><b>Friday</b><span>06:00 to 23:00</span></div><div class="day"><b>Saturday</b><span>06:00 to 23:00</span></div><div class="day"><b>Sunday</b><span>06:00 to 21:00</span></div></div>
+</section>
+
+<section class="wrap" id="faq">
+  <div class="sec-head">
+    <p class="eyebrow">Questions</p>
+    <h2>Before you book</h2>
+  </div>
+  <div class="faq"><details><summary>How many can play?</summary><p>Padel is four, badminton is four, and the basketball court fits a full ten.</p></details><details><summary>Can I hire rackets?</summary><p>Yes, one hundred pesos each at the desk, and balls are fifty a tube.</p></details><details><summary>What if I am late?</summary><p>The court is held for the whole booking, but the clock starts at your slot.</p></details><details><summary>Can I book the same slot every week?</summary><p>Message us and we will block a standing slot for you off the public board.</p></details></div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div><b>Courtside Pasig</b>7 Sandoval Avenue, Rosario, Pasig</div>
+    <div><b>Talk to us</b>0917 555 0177</div>
+    <div><b>Booking</b>Online only, no fee</div>
+  </div>
+</footer>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/site.js"></script>
 </body>

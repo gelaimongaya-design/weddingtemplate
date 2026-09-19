@@ -1,215 +1,120 @@
 const CONFIG = {
-  "nameA": "Mika",
-  "nameB": "Paolo",
-  "monogram": "M / P",
-  "dateISO": "2027-02-14T15:30:00+08:00",
-  "dateLabel": "14 February 2027",
-  "timeLabel": "3:30 in the afternoon",
-  "venueShort": "Hillcrest Garden, Tagaytay",
-  "footerLine": "Hillcrest Garden, Tagaytay",
-  "contactLine": "0917 555 0142",
-  "rsvpDeadline": "20 January 2027",
+  "area": "Rosario, Pasig",
+  "stats": [
+    {
+      "value": "4",
+      "label": "Covered courts"
+    },
+    {
+      "value": "6am",
+      "label": "Doors open"
+    },
+    {
+      "value": "0",
+      "label": "Booking fee"
+    }
+  ],
+  "brand": "Courtside Pasig",
+  "tagline": "Book a court in about thirty seconds",
+  "lede": "Four covered courts off Ortigas Avenue. Lights included, balls for hire, and the slot is yours the moment you confirm.",
+  "address": "7 Sandoval Avenue, Rosario, Pasig",
+  "contact": "0917 555 0177",
+  "currency": "\u20b1",
   "endpoint": "",
-  "maxUploadFiles": 20,
-  "maxUploadMB": 25,
-  "meals": [
-    "Beef",
-    "Fish",
-    "Chicken",
-    "Vegetarian"
-  ],
-  "facts": [
+  "slotMinutes": 30,
+  "leadHours": 1,
+  "bookAheadDays": 21,
+  "hours": {
+    "mon": {
+      "open": "06:00",
+      "close": "22:00"
+    },
+    "tue": {
+      "open": "06:00",
+      "close": "22:00"
+    },
+    "wed": {
+      "open": "06:00",
+      "close": "22:00"
+    },
+    "thu": {
+      "open": "06:00",
+      "close": "22:00"
+    },
+    "fri": {
+      "open": "06:00",
+      "close": "23:00"
+    },
+    "sat": {
+      "open": "06:00",
+      "close": "23:00"
+    },
+    "sun": {
+      "open": "06:00",
+      "close": "21:00"
+    }
+  },
+  "closedDates": [],
+  "services": [
     {
-      "label": "When",
-      "value": "14 February 2027"
+      "name": "Padel, one hour",
+      "minutes": 60,
+      "price": 900,
+      "staff": "Court 1",
+      "blurb": "Court one or two, glass backed, lights on after six."
     },
     {
-      "label": "Time",
-      "value": "3:30 PM"
+      "name": "Padel, ninety minutes",
+      "minutes": 90,
+      "price": 1300,
+      "staff": "Court 1",
+      "blurb": "The usual booking for four players and a warm up."
     },
     {
-      "label": "Where",
-      "value": "Hillcrest Garden, Tagaytay"
+      "name": "Badminton, one hour",
+      "minutes": 60,
+      "price": 450,
+      "staff": "Court 3",
+      "blurb": "Court three, wooden floor, nets already up."
+    },
+    {
+      "name": "Basketball, two hours",
+      "minutes": 120,
+      "price": 1600,
+      "staff": "Court 4",
+      "blurb": "Full court four with a scoreboard and two racks of balls."
     }
   ],
-  "schedule": [
+  "promises": [
     {
-      "time": "2:45",
-      "what": "Guests arrive"
+      "title": "Lights are included",
+      "body": "No extra charge after sundown. The price you see covers the lights for the whole booking."
     },
     {
-      "time": "3:30",
-      "what": "Ceremony"
+      "title": "Rain does not count",
+      "body": "Every court is covered. If we ever close a court, your booking moves free of charge."
     },
     {
-      "time": "4:30",
-      "what": "Merienda"
-    },
-    {
-      "time": "6:00",
-      "what": "Dinner"
-    },
-    {
-      "time": "10:00",
-      "what": "Last song"
-    }
-  ],
-  "notes": [
-    {
-      "title": "Dress",
-      "body": "Semi formal. Bring a layer, it cools after sundown."
-    },
-    {
-      "title": "Parking",
-      "body": "Free on site, with an overflow lot five minutes away."
-    },
-    {
-      "title": "Gifts",
-      "body": "Your presence is enough. We are saving towards a home."
-    }
-  ],
-  "guests": [
-    {
-      "id": "delacruz",
-      "party": "The Dela Cruz Family",
-      "members": [
-        "Juan Dela Cruz",
-        "Maria Dela Cruz",
-        "Sofia Dela Cruz"
-      ]
-    },
-    {
-      "id": "cora",
-      "party": "Tita Cora and Tito Ben",
-      "members": [
-        "Cora de Leon",
-        "Ben de Leon"
-      ]
-    },
-    {
-      "id": "jm",
-      "party": "JM Batungbakal",
-      "members": [
-        "JM Batungbakal"
-      ]
-    },
-    {
-      "id": "angela",
-      "party": "The Reyes-Santos Family",
-      "members": [
-        "Angela Reyes-Santos",
-        "Marco Santos",
-        "Lia Santos",
-        "Nico Santos"
-      ]
-    },
-    {
-      "id": "ramon",
-      "party": "Dr. Ramon Uy and guest",
-      "members": [
-        "Ramon Uy",
-        "Guest of Dr. Uy"
-      ]
-    },
-    {
-      "id": "garcia",
-      "party": "Len and Bono Garcia",
-      "members": [
-        "Len Garcia",
-        "Bono Garcia"
-      ]
-    },
-    {
-      "id": "pia",
-      "party": "Pia Villanueva",
-      "members": [
-        "Pia Villanueva"
-      ]
-    },
-    {
-      "id": "tolentino",
-      "party": "The Tolentinos",
-      "members": [
-        "Ruby Tolentino",
-        "Ed Tolentino",
-        "Mikaela Tolentino"
-      ]
-    }
-  ],
-  "gallery": [],
-  "gallerySlots": 8,
-  "travel": [
-    {
-      "title": "Getting there",
-      "meta": "Two hours from Makati",
-      "body": "Aguinaldo Highway slows on Sunday afternoons. Leave by noon if you are driving from the city."
-    },
-    {
-      "title": "Where to stay",
-      "meta": "Fifteen minutes away",
-      "body": "Three hotels sit near the venue. Message us and we will send the list with the rates we arranged."
-    },
-    {
-      "title": "Parking",
-      "meta": "Free on site",
-      "body": "Sixty slots inside the gate, with an overflow lot five minutes away and a shuttle running between the two."
+      "title": "Pay at the desk",
+      "body": "Nothing is charged online. Settle in cash, card or GCash when you arrive."
     }
   ],
   "faq": [
     {
-      "q": "May I bring a guest?",
-      "a": "Seats are reserved for the names on your invitation. Search your name above to see exactly who is included in your party."
+      "q": "How many can play?",
+      "a": "Padel is four, badminton is four, and the basketball court fits a full ten."
     },
     {
-      "q": "Are children welcome?",
-      "a": "Yes. Please include them when you reply so the caterer can plan, and tell us if you need a high chair."
+      "q": "Can I hire rackets?",
+      "a": "Yes, one hundred pesos each at the desk, and balls are fifty a tube."
     },
     {
-      "q": "What if it rains?",
-      "a": "The venue keeps a covered chapel and an indoor hall ready. Nothing gets cancelled."
+      "q": "What if I am late?",
+      "a": "The court is held for the whole booking, but the clock starts at your slot."
     },
     {
-      "q": "Until when can I reply?",
-      "a": "Please reply by the date on the invitation so we can confirm numbers with the caterer."
+      "q": "Can I book the same slot every week?",
+      "a": "Message us and we will block a standing slot for you off the public board."
     }
-  ],
-  "weddingParty": [
-    {
-      "role": "Maid of honour",
-      "name": "Bea Lim"
-    },
-    {
-      "role": "Best man",
-      "name": "Enzo Ramos"
-    },
-    {
-      "role": "Bridesmaid",
-      "name": "Kaye Domingo"
-    },
-    {
-      "role": "Bridesmaid",
-      "name": "Nadine Cruz"
-    },
-    {
-      "role": "Groomsman",
-      "name": "I\u00f1igo Perez"
-    },
-    {
-      "role": "Groomsman",
-      "name": "Tristan Ong"
-    }
-  ],
-  "registry": {
-    "note": "Your presence is the gift. If you would still like to give something, we are saving towards a home.",
-    "links": [
-      {
-        "label": "Our home fund",
-        "url": "#"
-      },
-      {
-        "label": "Gift registry",
-        "url": "#"
-      }
-    ]
-  }
+  ]
 };

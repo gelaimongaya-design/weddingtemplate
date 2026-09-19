@@ -1,4 +1,4 @@
-Sol Wedding Website Template
+Velvet Wedding Website Template
 
 WHAT IS IN THIS FOLDER
 
@@ -7,18 +7,19 @@ WHAT IS IN THIS FOLDER
   assets/css/style.css        every style rule for the page
   assets/js/config.js         names, date, venue, schedule, notes, guest list
   assets/js/site.js           guest search, RSVP form, photo upload, motion
-  assets/fonts/               ballet.woff2, karla.woff2, marcellus.woff2
+  assets/fonts/               cinzel.woff2, jost.woff2, tangerine.woff2
   assets/img/
+      corner-bl.svg          corner artwork, bottom left
+      corner-br.svg          corner artwork, bottom right
+      corner-tl.svg          corner artwork, top left
+      corner-tr.svg          corner artwork, top right
+      deco-frame-2.svg       the stepped frame on the story panel
+      deco-frame.svg         the stepped frame on the invitation panel
       divider.svg            the small ornament between sections
       illustration.svg       the drawing inside the story panel
-      pampas-l-2.svg         dried grasses, left of the footer
-      pampas-l.svg           dried grasses, left of the invitation
-      pampas-r-2.svg         dried grasses, right of the footer
-      pampas-r.svg           dried grasses, right of the invitation
       paper-grain.svg        the paper texture behind the whole page
-      sun-arc.svg            the arcs rising behind the invitation
+      sunburst.svg           the rays behind the names
       wash-hero.svg          the colour wash inside the invitation panel
-      wash-story.svg         the colour wash inside the story panel
   backend/Code.gs             the Google Apps Script that receives replies
   backend/appsscript.json     the Apps Script manifest
 

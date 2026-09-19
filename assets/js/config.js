@@ -4,7 +4,7 @@ const CONFIG = {
   "monogram": "M / P",
   "dateISO": "2027-02-14T15:30:00+08:00",
   "dateLabel": "14 February 2027",
-  "timeLabel": "3:30 in the afternoon",
+  "timeLabel": "6:00 in the evening",
   "venueShort": "Hillcrest Garden, Tagaytay",
   "footerLine": "Hillcrest Garden, Tagaytay",
   "contactLine": "0917 555 0142",

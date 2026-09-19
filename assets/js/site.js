@@ -287,34 +287,153 @@
     show(1);
   });
 
+  window.BookingFlow = {
+    open: function (opts) {
+      opts = opts || {};
+      var idx = Number(opts.service);
+      if (!isNaN(idx) && CONFIG.services[idx]) {
+        state.service = CONFIG.services[idx];
+        state.date = null;
+        state.time = null;
+        state.month = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+      }
+      if (!state.service) { paintSummary(); show(1); jump(); return; }
+      loadBooked().then(function () {
+        if (opts.date && !closed(opts.date) && hoursFor(opts.date)) {
+          state.date = opts.date;
+          drawSlots();
+        }
+        drawMonth();
+        if (state.date && opts.time !== undefined && opts.time !== null) {
+          var free = freeSlots(state.date, state.service);
+          if (free.indexOf(Number(opts.time)) !== -1) {
+            state.time = Number(opts.time);
+            paintSummary();
+            show(4);
+            jump();
+            return;
+          }
+        }
+        paintSummary();
+        show(state.date ? 3 : 2);
+        jump();
+      });
+    },
+    free: function (dateStr, serviceIndex) {
+      var svc = CONFIG.services[Number(serviceIndex) || 0];
+      if (!svc) return [];
+      return freeSlots(dateStr, svc);
+    },
+    label: clock,
+    day: longDate,
+    isOpen: function (dateStr) { return !!hoursFor(dateStr) && !closed(dateStr); },
+    hours: hoursFor,
+    ready: loadBooked
+  };
+
+  function jump() {
+    var top = $("flow").getBoundingClientRect().top + window.scrollY - headSize() - 12;
+    window.scrollTo({ top: top, behavior: "smooth" });
+  }
+
   paintSummary();
   show(1);
 })();
 
 (function () {
-  var box = document.getElementById("peek");
-  if (!box) return;
+  var strip = document.getElementById("bstrip");
+  var grid = document.getElementById("bgrid");
+  if (!strip || !grid || !window.BookingFlow) return;
+
+  var SHORT = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
   var MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   var pad = function (n) { return (n < 10 ? "0" : "") + n; };
-  var rows = [];
+  var iso = function (d) {
+    return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+  };
+
+  var days = [];
   var d = new Date();
   var guard = 0;
-  while (rows.length < 4 && guard < 30) {
-    var key = ["sun","mon","tue","wed","thu","fri","sat"][d.getDay()];
-    var span = CONFIG.hours[key];
-    if (span) {
-      rows.push({
-        label: d.getDate() + " " + MON[d.getMonth()],
-        text: span.open + " to " + span.close,
-        full: false
-      });
+  while (days.length < 7 && guard < 30) {
+    var key = iso(d);
+    if (window.BookingFlow.isOpen(key)) {
+      days.push({ key: key, label: SHORT[d.getDay()], num: d.getDate(),
+                  mon: MON[d.getMonth()], first: days.length === 0 });
     }
     d.setDate(d.getDate() + 1);
     guard++;
   }
-  box.innerHTML = rows.map(function (r) {
-    return '<div class="row"><b>' + r.label + '</b><span>' + r.text + '</span>' +
-      '<span class="tag' + (r.full ? ' full' : '') + '">' +
-      (r.full ? 'Full' : 'Open') + '</span></div>';
+  if (!days.length) { grid.innerHTML = '<p class="bnone">No open days right now.</p>'; return; }
+
+  var active = days[0].key;
+
+  strip.innerHTML = days.map(function (x, i) {
+    return '<button type="button" class="pill" data-date="' + x.key + '" aria-pressed="' +
+      (i === 0 ? "true" : "false") + '">' + (i === 0 ? "Today" : x.label) +
+      ' <small>' + x.num + " " + x.mon + "</small></button>";
   }).join("");
+
+  function paint() {
+    var span = window.BookingFlow.hours(active);
+    var head = document.getElementById("board-hours");
+    var name = document.getElementById("board-day");
+    if (head && span) head.textContent = span.open + " to " + span.close;
+    if (name) {
+      var pill = strip.querySelector('.pill[data-date="' + active + '"]');
+      name.textContent = pill ? pill.childNodes[0].textContent.trim() : "Today";
+    }
+    var html = "";
+    CONFIG.services.forEach(function (svc, i) {
+      var free = window.BookingFlow.free(active, i);
+      var open = window.BookingFlow.hours(active);
+      var all = [];
+      if (open) {
+        var s = Number(open.open.slice(0, 2)) * 60 + Number(open.open.slice(3));
+        var e = Number(open.close.slice(0, 2)) * 60 + Number(open.close.slice(3));
+        var n = new Date();
+        var floor = active === iso(n)
+          ? n.getHours() * 60 + n.getMinutes() + (CONFIG.leadHours || 0) * 60
+          : -1;
+        for (var t = s; t + svc.minutes <= e; t += 60) {
+          if (t >= floor) all.push(t);
+        }
+      }
+      var cells = all.map(function (t) {
+        var ok = free.indexOf(t) !== -1;
+        return '<button type="button" class="tslot' + (ok ? "" : " gone") +
+          '" data-s="' + i + '" data-t="' + t + '"' + (ok ? "" : " disabled") + ">" +
+          window.BookingFlow.label(t) + "</button>";
+      }).join("");
+      html += '<div class="bcourt"><div class="clabel"><b>' + svc.name +
+        "</b><span>" + svc.minutes + " min &middot; " + CONFIG.currency +
+        svc.price.toLocaleString() + "</span></div>" +
+        (cells ? '<div class="times">' + cells + "</div>"
+               : '<p class="bnone">Nothing left today. Try another day above.</p>')
+        + "</div>";
+    });
+    grid.innerHTML = html;
+  }
+
+  strip.addEventListener("click", function (e) {
+    var b = e.target.closest(".pill");
+    if (!b) return;
+    active = b.dataset.date;
+    Array.prototype.forEach.call(strip.querySelectorAll(".pill"), function (p) {
+      p.setAttribute("aria-pressed", p === b ? "true" : "false");
+    });
+    paint();
+  });
+
+  grid.addEventListener("click", function (e) {
+    var b = e.target.closest(".tslot");
+    if (!b || b.disabled) return;
+    window.BookingFlow.open({
+      service: Number(b.dataset.s),
+      date: active,
+      time: Number(b.dataset.t)
+    });
+  });
+
+  window.BookingFlow.ready().then(paint);
 })();

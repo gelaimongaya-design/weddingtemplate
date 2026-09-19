@@ -1,113 +1,195 @@
 const CONFIG = {
-  "area": "Diliman, Quezon City",
-  "stats": [
-    {
-      "value": "4",
-      "label": "Chairs"
-    },
-    {
-      "value": "6",
-      "label": "Days a week"
-    },
-    {
-      "value": "15 min",
-      "label": "Slot step"
-    }
-  ],
-  "brand": "Ironhouse Barbers",
-  "tagline": "Sharp cuts, booked to the minute",
-  "lede": "A four chair shop on Kalayaan. No queue, no walk in lottery. Pick your barber, pick your minute, turn up.",
-  "address": "118 Kalayaan Avenue, Diliman, Quezon City",
-  "contact": "0917 555 0199",
+  "area": "Rosario, Pasig",
+  "brand": "Courtside Pasig",
+  "tagline": "Tap a free hour, the court is yours",
+  "address": "7 Sandoval Avenue, Rosario, Pasig",
+  "contact": "0917 555 0177",
   "currency": "\u20b1",
   "endpoint": "",
-  "slotMinutes": 15,
+  "slotMinutes": 30,
   "leadHours": 1,
-  "bookAheadDays": 30,
+  "bookAheadDays": 21,
   "hours": {
-    "mon": null,
+    "mon": {
+      "open": "06:00",
+      "close": "22:00"
+    },
     "tue": {
-      "open": "11:00",
-      "close": "21:00"
+      "open": "06:00",
+      "close": "22:00"
     },
     "wed": {
-      "open": "11:00",
-      "close": "21:00"
+      "open": "06:00",
+      "close": "22:00"
     },
     "thu": {
-      "open": "11:00",
-      "close": "21:00"
+      "open": "06:00",
+      "close": "22:00"
     },
     "fri": {
-      "open": "11:00",
-      "close": "22:00"
+      "open": "06:00",
+      "close": "23:00"
     },
     "sat": {
-      "open": "10:00",
-      "close": "22:00"
+      "open": "06:00",
+      "close": "23:00"
     },
     "sun": {
-      "open": "12:00",
-      "close": "19:00"
+      "open": "06:00",
+      "close": "21:00"
     }
   },
   "closedDates": [],
   "services": [
     {
-      "name": "Skin fade",
-      "minutes": 45,
-      "price": 550,
-      "blurb": "Clipper work from zero, blended by hand, hot towel finish."
-    },
-    {
-      "name": "Scissor cut",
-      "minutes": 45,
-      "price": 500,
-      "blurb": "Dry cut, shaped to how your hair actually falls."
-    },
-    {
-      "name": "Cut and beard",
+      "name": "Padel, one hour",
       "minutes": 60,
-      "price": 750,
-      "blurb": "Full cut plus a razor line up and beard oil."
+      "price": 900,
+      "staff": "Court 1",
+      "blurb": "Court one or two, glass backed, lights on after six."
     },
     {
-      "name": "Kid under twelve",
-      "minutes": 30,
-      "price": 350,
-      "blurb": "Quick, patient, and we have a booster seat."
+      "name": "Padel, ninety minutes",
+      "minutes": 90,
+      "price": 1300,
+      "staff": "Court 1",
+      "blurb": "The usual booking for four players and a warm up."
+    },
+    {
+      "name": "Badminton, one hour",
+      "minutes": 60,
+      "price": 450,
+      "staff": "Court 3",
+      "blurb": "Court three, wooden floor, nets already up."
+    },
+    {
+      "name": "Basketball, two hours",
+      "minutes": 120,
+      "price": 1600,
+      "staff": "Court 4",
+      "blurb": "Full court four with a scoreboard and two racks of balls."
     }
   ],
-  "promises": [
+  "courts": [
     {
-      "title": "Your minute is yours",
-      "body": "One chair is held for the whole booking. Nobody is squeezed in front of you."
+      "name": "Courts one and two",
+      "surface": "Glass backed padel",
+      "note": "Panoramic glass, artificial grass, floodlit from six.",
+      "tags": [
+        "Four players",
+        "Rackets for hire",
+        "Covered"
+      ]
     },
     {
-      "title": "Same price, every chair",
-      "body": "Senior or junior barber, the price on the board is the price you pay."
+      "name": "Court three",
+      "surface": "Sprung wooden badminton",
+      "note": "Two nets up at all times, shuttles sold at the desk.",
+      "tags": [
+        "Four players",
+        "Nets up",
+        "Air cooled"
+      ]
     },
     {
-      "title": "Late is fifteen",
-      "body": "We hold your chair fifteen minutes. After that the slot goes back on the board."
+      "name": "Court four",
+      "surface": "Full size basketball",
+      "note": "Scoreboard, shot clock and two racks of balls included.",
+      "tags": [
+        "Ten players",
+        "Scoreboard",
+        "Covered"
+      ]
+    }
+  ],
+  "rates": [
+    {
+      "what": "Padel, per hour",
+      "peak": 900,
+      "off": 700,
+      "note": "Court one or two, four players"
+    },
+    {
+      "what": "Padel, ninety minutes",
+      "peak": 1300,
+      "off": 1000,
+      "note": "The usual weekend booking"
+    },
+    {
+      "what": "Badminton, per hour",
+      "peak": 450,
+      "off": 350,
+      "note": "Court three, nets included"
+    },
+    {
+      "what": "Basketball, two hours",
+      "peak": 1600,
+      "off": 1200,
+      "note": "Full court four with scoreboard"
+    },
+    {
+      "what": "Racket hire",
+      "peak": 100,
+      "off": 100,
+      "note": "Each, at the desk"
+    },
+    {
+      "what": "Ball tube",
+      "peak": 50,
+      "off": 50,
+      "note": "Padel or shuttles"
+    }
+  ],
+  "events": [
+    {
+      "day": "04",
+      "mon": "Oct",
+      "title": "Padel ladder, round one",
+      "note": "Sixteen pairs, group stage from nine in the morning.",
+      "cost": "\u20b1600"
+    },
+    {
+      "day": "11",
+      "mon": "Oct",
+      "title": "Beginners badminton clinic",
+      "note": "Two hours with a coach, rackets provided.",
+      "cost": "\u20b1450"
+    },
+    {
+      "day": "18",
+      "mon": "Oct",
+      "title": "Three on three, open division",
+      "note": "Court four, eight teams, cash prize for the winners.",
+      "cost": "\u20b11,200"
+    },
+    {
+      "day": "25",
+      "mon": "Oct",
+      "title": "Ladies padel night",
+      "note": "Courts one and two from six, mixed levels welcome.",
+      "cost": "\u20b1600"
     }
   ],
   "faq": [
     {
-      "q": "Can I pick my barber?",
-      "a": "Message us after booking and we will put your name against the chair you want."
+      "q": "How many can play?",
+      "a": "Padel is four, badminton is four, and the basketball court fits a full ten."
     },
     {
-      "q": "Do you take walk ins?",
-      "a": "Only into gaps. The board online is the real board."
+      "q": "Can I hire rackets?",
+      "a": "Yes, one hundred pesos each at the desk, and balls are fifty a tube."
     },
     {
-      "q": "How do I cancel?",
-      "a": "Message us. Cancel more than two hours ahead and there is nothing owed."
+      "q": "What if I am late?",
+      "a": "The court is held for the whole booking, but the clock starts at your slot."
     },
     {
-      "q": "Card or cash?",
-      "a": "Cash, card and GCash at the counter. Nothing is taken when you book."
+      "q": "Can I book the same slot every week?",
+      "a": "Message us and we will block a standing slot for you off the public board."
+    },
+    {
+      "q": "Is there parking?",
+      "a": "Twelve slots inside the gate, free while you are on a court."
     }
   ]
 };

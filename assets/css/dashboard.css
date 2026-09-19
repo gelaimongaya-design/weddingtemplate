@@ -1,8 +1,8 @@
 :root{
-  --page:#F8FAFC; --card:#FFFFFF; --ink:#1F2C3C; --dim:#6E7F91;
-  --line:#DAE4EE; --key:#22405E; --key-soft:#E7EFF7;
-  --yes:#3D6B54; --no:#A5533C; --wait:#33587D;
-  --body:"Manrope",system-ui,sans-serif; --display:"Playfair Display",Georgia,serif; --hand:"Great Vibes",cursive;
+  --page:#FBF7EF; --card:#FFFDF8; --ink:#3A332A; --dim:#8A7F70;
+  --line:#E7DCCB; --key:#8A6B39; --key-soft:#F0E6D6;
+  --yes:#6C7C63; --no:#A9583F; --wait:#B08D57;
+  --body:"Jost",system-ui,sans-serif; --display:"Cormorant Garamond",Georgia,serif; --hand:"Pinyon Script",cursive;
 }
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0; background:var(--page); color:var(--ink); font-family:var(--body);
@@ -36,7 +36,8 @@ input:focus-visible,select:focus-visible,button:focus-visible{
 .row{display:flex; gap:10px; flex-wrap:wrap; margin-top:20px}
 .btn{font-family:var(--body); font-size:.66rem; font-weight:600; letter-spacing:.18em;
      text-transform:uppercase; padding:12px 22px; border-radius:5px; cursor:pointer;
-     border:1px solid var(--key); background:var(--key); color:var(--card)}
+     border:1px solid var(--key); background:var(--key); color:var(--card);
+     min-height:44px; display:inline-flex; align-items:center; justify-content:center}
 .btn.ghost{background:transparent; color:var(--key)}
 .btn.ghost:hover{background:var(--key-soft)}
 .btn:disabled{opacity:.5; cursor:default}
@@ -93,7 +94,8 @@ input:focus-visible,select:focus-visible,button:focus-visible{
 
 .files{display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:8px}
 .file{border:1px solid var(--line); border-radius:6px; padding:10px 12px; font-size:.86rem}
-.file a{color:var(--key); text-decoration:none; word-break:break-all}
+.file a{color:var(--key); text-decoration:none; word-break:break-all;
+        display:flex; align-items:center; min-height:44px}
 .file span{display:block; color:var(--dim); font-size:.74rem; margin-top:4px}
 
 .notes{display:grid; gap:10px}

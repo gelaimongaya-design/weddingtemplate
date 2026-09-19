@@ -3,99 +3,107 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Porcelain Wedding</title>
+<title>Amara Wedding</title>
 <meta name="description" content="Wedding details and RSVP.">
 <link rel="stylesheet" href="assets/css/fonts.css">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-<div class="progress" id="progress" aria-hidden="true"></div>
-<nav class="dots" aria-label="Sections">
-  <a href="#invite" class="on" aria-label="Invitation"></a>
-  <a href="#story" aria-label="Our story"></a>
-  <a href="#day" aria-label="The day"></a>
-  <a href="#details" aria-label="Details"></a>
-  <a href="#rsvp" aria-label="Reply"></a>
-  <a href="#photos" aria-label="Album"></a>
-  <a href="#questions" aria-label="Questions"></a>
-</nav>
+<div class="cover" id="cover" role="button" tabindex="0" aria-label="Open the invitation">
+  <div class="flap">
+    <span class="stamp"><span id="cover-mark">M</span></span>
+    <span class="to"><b id="cover-names"></b></span>
+    <span class="open">Tap to open</span>
+  </div>
+</div>
 
-<header class="hero screen" id="invite">
-  <span class="band top" aria-hidden="true"><img src="assets/img/vine-band.svg" alt=""></span>
+<header class="hero" id="top">
+  <span class="edge" aria-hidden="true"></span>
+  <span class="corner tl" aria-hidden="true"><img src="assets/img/corner-tl.svg" alt=""></span>
+  <span class="corner tr" aria-hidden="true"><img src="assets/img/corner-tr.svg" alt=""></span>
+  <span class="corner bl" aria-hidden="true"><img src="assets/img/corner-bl.svg" alt=""></span>
+  <span class="corner br" aria-hidden="true"><img src="assets/img/corner-br.svg" alt=""></span>
+
   <div class="wrap">
-    <p class="caps above rise d1">Together with their families</p>
-    <div class="plate rise d2">
-      <img src="assets/img/wash-hero.svg" alt="">
-      <span class="ring" aria-hidden="true"><img src="assets/img/plate-ring.svg" alt=""></span>
+    <div class="plate rise d1">
+      <span class="fill" aria-hidden="true"><img src="assets/img/wash-hero.svg" alt=""></span>
+      <span class="rim" aria-hidden="true"></span>
+      <span class="wreath" aria-hidden="true"><img src="assets/img/wreath.svg" alt=""></span>
       <div class="inner">
+        <p class="caps top rise d2">Together with their families</p>
         <h1 class="names">
-          <span class="n script rise d3" id="name-a"></span>
+          <span class="n script gilt rise d3" id="name-a"></span>
           <span class="amp rise d4">and</span>
-          <span class="n script rise d5" id="name-b"></span>
+          <span class="n script gilt rise d5" id="name-b"></span>
         </h1>
         <span class="rule rise d6" aria-hidden="true"></span>
         <p class="date rise d6" id="hero-date"></p>
+        <p class="venue rise d6" id="hero-venue"></p>
       </div>
     </div>
-    <div class="below rise d6">
-      <p class="venue" id="hero-venue"></p>
-      <p class="count" id="countdown"></p>
-    </div>
+    <p class="count rise d6" id="countdown"></p>
   </div>
 </header>
 
-<section class="screen" id="story">
-  <div class="wrap">
-    <div class="story veil">
-      <figure class="panel" style="margin:0">
-        <img src="assets/img/wash-story.svg" alt="">
-        <span class="ring" aria-hidden="true"><img src="assets/img/plate-ring-2.svg" alt=""></span>
-        <span class="art" aria-hidden="true"><img src="assets/img/illustration.svg" alt=""></span>
-      </figure>
-      <div class="quote">
-        <span class="caps">Our story</span>
-        <q>Two cups of tea on a rainy Sunday, and neither of us has left
-          the table since.</q>
-        <p class="sign">Mika and Paolo</p>
-      </div>
+<div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
+
+<section class="wrap" id="story">
+  <div class="story veil">
+    <figure class="panel" style="margin:0">
+      <img src="assets/img/wash-story.svg" alt="">
+      <span class="rim" aria-hidden="true"></span>
+      <span class="art" aria-hidden="true"><img src="assets/img/illustration.svg" alt=""></span>
+    </figure>
+    <div class="quote">
+      <span class="caps">Our story</span>
+      <q>We met on a Tuesday, in the rain, arguing over the last umbrella in the shop.
+        She kept it. He kept her.</q>
+      <p class="sign">Mika and Paolo</p>
     </div>
   </div>
 </section>
 
-<section class="screen" id="day">
-  <div class="wrap">
-    <div class="sec-head veil">
-      <span class="caps">The celebration</span>
-      <h2>How the day unfolds</h2>
-    </div>
-    <div class="veil"><div id="schedule"></div></div>
+<div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
+
+<section class="wrap" id="day">
+  <div class="sec-head veil">
+    <span class="caps">The celebration</span>
+    <h2 class="serif">How the day unfolds</h2>
   </div>
+  <div class="veil"><div id="schedule"></div></div>
 </section>
 
-<section class="screen" id="details">
-  <div class="wrap">
-    <div class="sec-head veil">
-      <span class="caps">Good to know</span>
-      <h2>Three small things</h2>
-    </div>
-    <div class="veil"><div id="notes"></div></div>
-    <div class="orn veil" aria-hidden="true"><img src="assets/img/veil.svg" alt=""></div>
-    <div class="veil">
+<section class="wrap" id="details">
+  <div class="sec-head veil">
+    <span class="caps">Good to know</span>
+    <h2 class="serif">Three small things</h2>
+  </div>
+  <div class="veil"><div id="notes"></div></div>
+</section>
+
+<div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
+
+<section class="wrap" id="travel-sec">
+  <div class="sec-head veil">
+    <span class="caps">Getting to Tagaytay</span>
+    <h2 class="serif">Travel and rooms</h2>
+  </div>
+  <div class="veil">
 
     <div class="travel" id="travel"></div>
 
-    </div>
   </div>
 </section>
 
-<section class="screen" id="rsvp">
-  <div class="wrap">
-    <div class="sec-head veil">
-      <span class="caps">Kindly reply</span>
-      <h2>Find your invitation</h2>
-      <p>Type your name and your whole party will appear.</p>
-    </div>
-    <div class="veil">
+<div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
+
+<section class="wrap" id="rsvp">
+  <div class="sec-head veil">
+    <span class="caps">Kindly reply</span>
+    <h2 class="serif">Find your invitation</h2>
+    <p>Type your name and your whole party will appear.</p>
+  </div>
+  <div class="veil">
 
     <div class="card">
       <div id="step-search">
@@ -133,18 +141,16 @@
       </div>
     </div>
 
-    </div>
   </div>
 </section>
 
-<section class="screen" id="photos">
-  <div class="wrap">
-    <div class="sec-head veil">
-      <span class="caps">The album</span>
-      <h2>Photographs</h2>
-      <p>Ours so far, and yours from the day.</p>
-    </div>
-    <div class="veil">
+<section class="wrap" id="photos">
+  <div class="sec-head veil">
+    <span class="caps">The album</span>
+    <h2 class="serif">Photographs</h2>
+    <p>Ours so far, and yours from the day.</p>
+  </div>
+  <div class="veil">
 
     <div class="gallery" id="gallery"></div>
     <div class="lightbox" id="lightbox" hidden>
@@ -154,8 +160,8 @@
       <button class="lb-next" type="button" id="lb-next" aria-label="Next">&rsaquo;</button>
     </div>
 
-    </div>
-    <div class="veil" style="margin-top:clamp(22px,4vh,38px)">
+  </div>
+  <div class="veil" style="margin-top:clamp(22px,4vh,38px)">
 
     <div class="drop" id="drop" role="button" tabindex="0" aria-label="Choose photos or video">
       <strong>Add photos or video</strong>
@@ -169,25 +175,26 @@
     </div>
     <p class="status" id="upload-status" role="status" aria-live="polite"></p>
 
-    </div>
   </div>
 </section>
 
-<section class="screen" id="questions">
-  <div class="wrap">
-    <div class="sec-head veil">
-      <span class="caps">Before you ask</span>
-      <h2>Questions</h2>
-    </div>
-    <div class="veil">
+<div class="orn" aria-hidden="true"><img src="assets/img/divider.svg" alt=""></div>
 
-    <div class="faq" id="faq"></div>
+<section class="wrap" id="gifts">
+  <div class="sec-head veil">
+    <span class="caps">If you insist</span>
+    <h2 class="serif">Gifts</h2>
+  </div>
+  <div class="veil">
 
-    </div>
+    <div class="registry" id="registry"></div>
+
   </div>
 </section>
 
 <footer>
+  <span class="foot-spray l" aria-hidden="true"><img src="assets/img/foot-spray-l.svg" alt=""></span>
+  <span class="foot-spray r" aria-hidden="true"><img src="assets/img/foot-spray-r.svg" alt=""></span>
   <div class="wrap">
     <div class="seal veil"><span id="seal-mark">M</span></div>
     <div class="names-sm veil" id="foot-names"></div>

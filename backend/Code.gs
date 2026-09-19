@@ -13,7 +13,8 @@ const SHEETS = {
   },
   booking: {
     name: "Bookings",
-    headers: ["Received", "Name", "Email", "Phone", "Service", "Date", "Time", "Notes", "Status"]
+    headers: ["Received", "Reference", "Name", "Email", "Phone", "Service", "Date",
+              "Time", "Minutes", "Staff", "Price", "Notes", "Status"]
   },
   upload: {
     name: "Uploads",
@@ -44,12 +45,12 @@ function doPost(e) {
 function doGet(e) {
   const params = e && e.parameter ? e.parameter : {};
   const what = String(params.what || "");
-  if (what === "slots") return reply({ ok: true, taken: takenSlots() });
+  if (what === "slots") return reply({ ok: true, booked: bookedList() });
   if (what === "data") {
     if (String(params.key || "") !== SETTINGS.dashboardKey) {
       return reply({ ok: false, error: "Wrong key" });
     }
-    return reply({ ok: true, rsvp: rsvpRows(), uploads: uploadRows() });
+    return reply({ ok: true, rsvp: rsvpRows(), uploads: uploadRows(), bookings: bookedList() });
   }
   return reply({ ok: true, status: "ready" });
 }
@@ -154,17 +155,35 @@ function saveRsvp(body) {
 
 function saveBooking(body) {
   const sheet = sheetFor("booking");
-  sheet.appendRow([
-    new Date(),
-    String(body.name || ""),
-    String(body.email || ""),
-    String(body.phone || ""),
-    String(body.service || ""),
-    String(body.date || ""),
-    String(body.time || ""),
-    String(body.notes || ""),
-    "New"
-  ]);
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    const clash = conflicts(String(body.date || ""), String(body.time || ""),
+                            Number(body.minutes || 30), String(body.staff || ""));
+    if (clash) {
+      return { ok: false, taken: true, error: "That time was just taken" };
+    }
+    const reference = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyyMMdd") +
+      "-" + Math.floor(Math.random() * 9000 + 1000);
+    sheet.appendRow([
+      new Date(),
+      reference,
+      String(body.name || ""),
+      String(body.email || ""),
+      String(body.phone || ""),
+      String(body.service || ""),
+      String(body.date || ""),
+      String(body.time || ""),
+      Number(body.minutes || 30),
+      String(body.staff || ""),
+      Number(body.price || 0),
+      String(body.notes || ""),
+      "New"
+    ]);
+    body.reference = reference;
+  } finally {
+    lock.releaseLock();
+  }
 
   if (SETTINGS.notifyOnBooking && SETTINGS.notifyEmail) {
     MailApp.sendEmail(
@@ -181,7 +200,47 @@ function saveBooking(body) {
     );
   }
 
-  return { ok: true, reference: Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyyMMdd-HHmmss") };
+  return { ok: true, reference: body.reference };
+}
+
+function minutesOf(time) {
+  const bits = String(time || "").split(":");
+  return (Number(bits[0]) || 0) * 60 + (Number(bits[1]) || 0);
+}
+
+function bookedList() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEETS.booking.name);
+  if (!sheet || sheet.getLastRow() < 2) return [];
+  const rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, SHEETS.booking.headers.length).getValues();
+  const out = [];
+  for (let r = 0; r < rows.length; r++) {
+    if (String(rows[r][12]) === "Cancelled") continue;
+    const date = rows[r][6] instanceof Date
+      ? Utilities.formatDate(rows[r][6], Session.getScriptTimeZone(), "yyyy-MM-dd")
+      : String(rows[r][6] || "");
+    if (!date) continue;
+    out.push({
+      date: date,
+      time: String(rows[r][7] || ""),
+      minutes: Number(rows[r][8] || 30),
+      staff: String(rows[r][9] || "")
+    });
+  }
+  return out;
+}
+
+function conflicts(date, time, minutes, staff) {
+  const start = minutesOf(time);
+  const end = start + minutes;
+  const list = bookedList();
+  for (let i = 0; i < list.length; i++) {
+    const b = list[i];
+    if (b.date !== date) continue;
+    if (staff && b.staff && b.staff !== staff) continue;
+    const bs = minutesOf(b.time);
+    if (start < bs + b.minutes && bs < end) return true;
+  }
+  return false;
 }
 
 function saveMessage(body) {
@@ -222,20 +281,4 @@ function uploadFolder() {
 function safeName(name) {
   const clean = String(name || "upload").replace(/[^A-Za-z0-9._-]/g, "_").slice(0, 80);
   return Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyyMMdd-HHmmss") + "-" + clean;
-}
-
-function takenSlots() {
-  const book = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = book.getSheetByName(SHEETS.booking.name);
-  if (!sheet) return [];
-  const rows = sheet.getDataRange().getValues();
-  const out = [];
-  for (let r = 1; r < rows.length; r++) {
-    const status = String(rows[r][8] || "");
-    if (status === "Cancelled") continue;
-    const date = rows[r][5];
-    const time = rows[r][6];
-    if (date && time) out.push(String(date) + " " + String(time));
-  }
-  return out;
 }

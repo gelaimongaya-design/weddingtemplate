@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 340" width="280" height="340" fill="none" aria-hidden="true">
+<defs><clipPath id="p1"><rect width="280" height="340" rx="3"/></clipPath></defs>
+<g clip-path="url(#p1)">
+  <rect width="280" height="340" fill="#DFD6C4"/>
+  <circle cx="140" cy="146" r="104" fill="#C4714B" opacity=".2"/>
+  <g transform="translate(28 34) scale(1.87)">
+    <path d="M53 64 L67 64 L67 96 L53 96 Z" fill="#C69B7B"/>
+    <path d="M16 200 C16 128 34 92 60 92 C86 92 104 128 104 200 Z" fill="#C4714B"/>
+    <path d="M50 92 C52 102 68 102 70 92 C78 96 84 104 88 116 C78 124 42 124 32 116
+             C36 104 42 96 50 92 Z" fill="#DFD6C4" opacity=".55"/>
+    <circle cx="60" cy="48" r="24" fill="#C69B7B"/>
+    <path d="M34 46 C34 22 48 11 61 11 C76 11 87 23 87 46 C82 37 78 29 61 29 C44 29 39 37 34 46 Z" fill="#1C2B24" opacity=".92"/>
+    <circle cx="51" cy="50" r="2.7" fill="#1C2B24" opacity=".85"/>
+    <circle cx="69" cy="50" r="2.7" fill="#1C2B24" opacity=".85"/>
+    <path d="M54 60 C57 63.5 63 63.5 66 60" stroke="#1C2B24" stroke-width="2.4"
+          stroke-linecap="round" fill="none" opacity=".6"/>
+    <path d="M45 40 C48 37 53 37 55 39 M65 39 C67 37 72 37 75 40" stroke="#1C2B24"
+          stroke-width="2.2" stroke-linecap="round" fill="none" opacity=".5"/>
+  </g>
+</g>
+</svg>

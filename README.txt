@@ -1,4 +1,4 @@
-Amara Wedding Website Template
+Porcelain Wedding Website Template
 
 WHAT IS IN THIS FOLDER
 
@@ -7,20 +7,16 @@ WHAT IS IN THIS FOLDER
   assets/css/style.css        every style rule for the page
   assets/js/config.js         names, date, venue, schedule, notes, guest list
   assets/js/site.js           guest search, RSVP form, photo upload, motion
-  assets/fonts/               cormorant-garamond-italic.woff2, cormorant-garamond.woff2, jost.woff2, pinyon-script.woff2
+  assets/fonts/               great-vibes.woff2, manrope.woff2, playfair-display-italic.woff2, playfair-display.woff2
   assets/img/
-      corner-bl.svg          corner artwork, bottom left
-      corner-br.svg          corner artwork, bottom right
-      corner-tl.svg          corner artwork, top left
-      corner-tr.svg          corner artwork, top right
       divider.svg            the small ornament between sections
-      foot-spray-l.svg       footer artwork, left
-      foot-spray-r.svg       footer artwork, right
       illustration.svg       the drawing inside the story panel
       paper-grain.svg        the paper texture behind the whole page
+      plate-ring-2.svg       the floral ring around the story panel
+      plate-ring.svg         the floral ring around the invitation
+      vine-band.svg          the vine running across the top of the page
       wash-hero.svg          the colour wash inside the invitation panel
       wash-story.svg         the colour wash inside the story panel
-      wreath.svg             the wreath behind the names
   backend/Code.gs             the Google Apps Script that receives replies
   backend/appsscript.json     the Apps Script manifest
 

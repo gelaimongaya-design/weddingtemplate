@@ -1,0 +1,12 @@
+Drop your photographs in this folder, then list their file names in the
+gallery array inside assets/js/config.js.
+
+  "gallery": [
+    { "src": "assets/img/photos/engagement.jpg", "caption": "Tagaytay" },
+    { "src": "assets/img/photos/proposal.jpg", "caption": "The proposal", "wide": true },
+    "assets/img/photos/church.jpg"
+  ]
+
+A plain file name works on its own. Add caption for a line under the photo
+in the viewer, and wide true to let a photo take two columns.
+Around 1600 pixels on the long edge keeps the page quick.

@@ -2,7 +2,8 @@ const SETTINGS = {
   uploadFolderName: "Website Uploads",
   notifyEmail: "",
   notifyOnRsvp: true,
-  notifyOnBooking: true
+  notifyOnBooking: true,
+  dashboardKey: "change-this-key"
 };
 
 const SHEETS = {
@@ -41,9 +42,54 @@ function doPost(e) {
 }
 
 function doGet(e) {
-  const what = e && e.parameter ? String(e.parameter.what || "") : "";
+  const params = e && e.parameter ? e.parameter : {};
+  const what = String(params.what || "");
   if (what === "slots") return reply({ ok: true, taken: takenSlots() });
+  if (what === "data") {
+    if (String(params.key || "") !== SETTINGS.dashboardKey) {
+      return reply({ ok: false, error: "Wrong key" });
+    }
+    return reply({ ok: true, rsvp: rsvpRows(), uploads: uploadRows() });
+  }
   return reply({ ok: true, status: "ready" });
+}
+
+function rowsOf(key) {
+  const spec = SHEETS[key];
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(spec.name);
+  if (!sheet || sheet.getLastRow() < 2) return [];
+  const width = spec.headers.length;
+  return sheet.getRange(2, 1, sheet.getLastRow() - 1, width).getValues();
+}
+
+function stamp(value) {
+  return value instanceof Date ? value.toISOString() : String(value || "");
+}
+
+function rsvpRows() {
+  return rowsOf("rsvp").map(function (r) {
+    return {
+      received: stamp(r[0]),
+      party: String(r[1] || ""),
+      guest: String(r[2] || ""),
+      reply: String(r[3] || ""),
+      meal: String(r[4] || ""),
+      song: String(r[5] || ""),
+      note: String(r[6] || "")
+    };
+  });
+}
+
+function uploadRows() {
+  return rowsOf("upload").map(function (r) {
+    return {
+      received: stamp(r[0]),
+      file: String(r[1] || ""),
+      type: String(r[2] || ""),
+      sizeKb: Number(r[3] || 0),
+      link: String(r[4] || "")
+    };
+  });
 }
 
 function reply(obj) {

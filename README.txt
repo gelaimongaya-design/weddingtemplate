@@ -1,25 +1,41 @@
-Velvet Wedding Website Template
+Amara Wedding Website Template
+
+TWO PAGES
+
+  index.html      the invitation the guests see
+  dashboard.html  a private page for the couple, not linked from the site
+
+THE LAYOUT
+
+  A sealed envelope that the guest taps to open, then one continuous scroll.
+
+  Sections: Invitation, our story, the day, details, travel and rooms, reply, album, gifts.
 
 WHAT IS IN THIS FOLDER
 
   index.html                  the page markup, nothing else
+  dashboard.html              the private guest list page
   assets/css/fonts.css        loads the typefaces from the fonts folder
-  assets/css/style.css        every style rule for the page
-  assets/js/config.js         names, date, venue, schedule, notes, guest list
-  assets/js/site.js           guest search, RSVP form, photo upload, motion
-  assets/fonts/               cinzel.woff2, jost.woff2, tangerine.woff2
+  assets/css/style.css        every style rule for the invitation
+  assets/css/dashboard.css    every style rule for the dashboard
+  assets/js/config.js         names, date, venue, schedule, travel, guest list, album
+  assets/js/site.js           guest search, RSVP form, album viewer, upload, motion
+  assets/js/dashboard.js      counts, filters, CSV export
+  assets/fonts/               cormorant-garamond-italic.woff2, cormorant-garamond.woff2, jost.woff2, pinyon-script.woff2
+  assets/img/photos/          empty, this is where your photographs go
   assets/img/
       corner-bl.svg          corner artwork, bottom left
       corner-br.svg          corner artwork, bottom right
       corner-tl.svg          corner artwork, top left
       corner-tr.svg          corner artwork, top right
-      deco-frame-2.svg       the stepped frame on the story panel
-      deco-frame.svg         the stepped frame on the invitation panel
-      divider.svg            the small ornament between sections
+      divider.svg            the ornament between sections
+      foot-spray-l.svg       footer artwork, left
+      foot-spray-r.svg       footer artwork, right
       illustration.svg       the drawing inside the story panel
       paper-grain.svg        the paper texture behind the whole page
-      sunburst.svg           the rays behind the names
       wash-hero.svg          the colour wash inside the invitation panel
+      wash-story.svg         the colour wash inside the story panel
+      wreath.svg             the wreath behind the names
   backend/Code.gs             the Google Apps Script that receives replies
   backend/appsscript.json     the Apps Script manifest
 
@@ -27,37 +43,56 @@ WHAT TO EDIT
 
   Everything a couple normally changes lives in assets/js/config.js.
   Open it in any text editor and change the names, the date, the venue,
-  the schedule rows, the notes and the guest list. Nothing else needs
-  touching for a standard setup.
+  the schedule rows, the notes, the travel cards, the questions and the
+  guest list. Nothing else needs touching for a standard setup.
 
-  To change colours, open assets/css/style.css and edit the values at the
-  very top, inside the block that begins with :root. Every colour on the
-  page is taken from there, so one edit changes the whole site.
+  To change colours on the invitation, open assets/css/style.css and edit
+  the values at the very top, inside the block that begins with :root.
+  The dashboard has its own :root block at the top of dashboard.css.
 
-  To swap the panel artwork for a real photograph, replace
-  assets/img/wash-hero.svg or assets/img/wash-story.svg with your own
-  image and update the file name in index.html.
+THE DASHBOARD
+
+  If the site lives at example.com, the dashboard lives at
+  example.com/dashboard.html. It is not linked from the invitation, so no
+  guest will stumble onto it.
+
+  It shows how many are attending, how many cannot come, how many have not
+  replied, and the total invited. A dinner count for the caterer. A chart
+  of replies by day. Every party with who answered and what they chose. A
+  search box, a filter for the ones who have gone quiet, and a button that
+  exports the whole guest list as a CSV. Photos that guests uploaded appear
+  as links, and every song request and note is collected in one place.
+
+  It asks once for the web app address and the dashboard key, then keeps
+  them on that device. There is a Forget this device button for a shared
+  computer.
+
+  The key is the phrase set in dashboardKey inside backend/Code.gs. Change
+  it before deploying. It is a light guard, right for a guest list, so pick
+  a long phrase and do not put anything in the sheet you would not want
+  seen by someone who guessed it.
+
+THE ALBUM
+
+  Drop photographs into assets/img/photos, then list them in the gallery
+  array in config.js. The note inside that folder shows the exact format.
+  Photographs open in a full screen viewer with arrows and the escape key.
+  While the array is empty the album shows labelled frames so the page
+  still looks finished.
 
 CONNECTING THE RSVP
 
-  While the endpoint field in config.js is left empty, the site runs in
-  preview mode. The guest search and the upload queue work, but nothing
-  is stored.
+  While the endpoint field in config.js is empty the site runs in preview
+  mode. The guest search and the upload queue work, but nothing is stored.
 
-  To go live, follow the Deployment Guide. Both files in the backend
-  folder are needed. Code.gs holds the logic. appsscript.json sets the
-  permissions the script asks for and publishes it so that guests without
-  a Google account can still send a reply. The Apps Script editor hides
-  appsscript.json until you open Project Settings and tick the box marked
-  Show appsscript.json manifest file in editor.
+  To go live, follow the Deployment Guide. Both files in the backend folder
+  are needed. Code.gs holds the logic. appsscript.json sets the permissions
+  and publishes the script so that guests without a Google account can
+  still reply. The Apps Script editor hides appsscript.json until you open
+  Project Settings and tick Show appsscript.json manifest file in editor.
 
-  The manifest is set to the Asia/Manila time zone. Change that line if
-  the couple is somewhere else, because it decides how dates and uploaded
-  file names are stamped.
-
-  Once deployed, paste the web app address into the endpoint field in
-  config.js. Replies then land in a Google Sheet and uploaded photos land
-  in a Google Drive folder.
+  The manifest is set to the Asia/Manila time zone. Change that line if the
+  couple is somewhere else.
 
 REQUIREMENTS
 

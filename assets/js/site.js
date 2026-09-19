@@ -317,6 +317,117 @@
 })();
 
 (function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  };
+
+  var photos = (CONFIG.gallery && CONFIG.gallery.length) ? CONFIG.gallery : [];
+  var slots = CONFIG.gallerySlots || 8;
+
+  if ($("gallery")) {
+    var html = "";
+    if (photos.length) {
+      photos.forEach(function (p, i) {
+        var src = typeof p === "string" ? p : p.src;
+        var cap = typeof p === "string" ? "" : (p.caption || "");
+        var wide = typeof p === "object" && p.wide ? " wide" : "";
+        html += '<button type="button" class="shot' + wide + '" data-i="' + i + '">' +
+          '<img src="' + esc(src) + '" alt="' + esc(cap) + '" loading="lazy"></button>';
+      });
+    } else {
+      for (var s = 0; s < slots; s++) {
+        html += '<div class="shot empty"><span>Photo ' + (s + 1) + '</span></div>';
+      }
+    }
+    $("gallery").innerHTML = html;
+  }
+
+  var at = 0;
+  function show(i) {
+    if (!photos.length) return;
+    at = (i + photos.length) % photos.length;
+    var p = photos[at];
+    $("lb-img").src = typeof p === "string" ? p : p.src;
+    $("lb-cap").textContent = typeof p === "string" ? "" : (p.caption || "");
+    $("lightbox").hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+  function hide() {
+    $("lightbox").hidden = true;
+    document.body.style.overflow = "";
+  }
+  if ($("gallery") && $("lightbox")) {
+    $("gallery").addEventListener("click", function (e) {
+      var b = e.target.closest(".shot");
+      if (b && !b.classList.contains("empty")) show(parseInt(b.dataset.i, 10));
+    });
+    $("lb-close").addEventListener("click", hide);
+    $("lb-prev").addEventListener("click", function () { show(at - 1); });
+    $("lb-next").addEventListener("click", function () { show(at + 1); });
+    $("lightbox").addEventListener("click", function (e) {
+      if (e.target === $("lightbox")) hide();
+    });
+    document.addEventListener("keydown", function (e) {
+      if ($("lightbox").hidden) return;
+      if (e.key === "Escape") hide();
+      if (e.key === "ArrowLeft") show(at - 1);
+      if (e.key === "ArrowRight") show(at + 1);
+    });
+  }
+
+  if ($("travel") && CONFIG.travel) {
+    $("travel").innerHTML = CONFIG.travel.map(function (t) {
+      return '<div class="trip"><h3>' + esc(t.title) + '</h3><p>' + esc(t.body) + '</p>' +
+        (t.meta ? '<span class="meta">' + esc(t.meta) + '</span>' : '') + '</div>';
+    }).join("");
+  }
+
+  if ($("faq") && CONFIG.faq) {
+    $("faq").innerHTML = CONFIG.faq.map(function (f) {
+      return '<details><summary>' + esc(f.q) + '</summary><p>' + esc(f.a) + '</p></details>';
+    }).join("");
+  }
+
+  if ($("party-list") && CONFIG.weddingParty) {
+    $("party-list").innerHTML = CONFIG.weddingParty.map(function (w) {
+      return '<div class="who"><span class="role">' + esc(w.role) + '</span>' +
+        '<span class="name">' + esc(w.name) + '</span></div>';
+    }).join("");
+  }
+
+  if ($("registry") && CONFIG.registry) {
+    $("registry").innerHTML = '<p>' + esc(CONFIG.registry.note) + '</p><div class="links">' +
+      (CONFIG.registry.links || []).map(function (l) {
+        return '<a class="btn ghost" href="' + esc(l.url) + '" target="_blank" rel="noopener">' +
+          esc(l.label) + '</a>';
+      }).join("") + '</div>';
+  }
+})();
+
+(function () {
+  var cover = document.getElementById("cover");
+  if (!cover) return;
+  document.body.classList.add("sealed");
+  var mark = document.getElementById("cover-mark");
+  if (mark) mark.textContent = CONFIG.nameA.charAt(0) + CONFIG.nameB.charAt(0).toLowerCase();
+  var to = document.getElementById("cover-names");
+  if (to) to.textContent = CONFIG.nameA + " and " + CONFIG.nameB;
+  function open() {
+    cover.classList.add("gone");
+    document.body.classList.remove("sealed");
+    setTimeout(function () { cover.setAttribute("hidden", ""); }, 900);
+  }
+  cover.addEventListener("click", open);
+  cover.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); }
+  });
+  setTimeout(open, 9000);
+})();
+
+(function () {
   var els = document.querySelectorAll(".veil");
   var showAll = function () {
     Array.prototype.forEach.call(els, function (el) { el.classList.add("seen"); });

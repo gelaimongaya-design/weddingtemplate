@@ -4,7 +4,7 @@ const CONFIG = {
   "monogram": "M / P",
   "dateISO": "2027-02-14T15:30:00+08:00",
   "dateLabel": "14 February 2027",
-  "timeLabel": "6:00 in the evening",
+  "timeLabel": "3:30 in the afternoon",
   "venueShort": "Hillcrest Garden, Tagaytay",
   "footerLine": "Hillcrest Garden, Tagaytay",
   "contactLine": "0917 555 0142",
@@ -135,5 +135,81 @@ const CONFIG = {
         "Mikaela Tolentino"
       ]
     }
-  ]
+  ],
+  "gallery": [],
+  "gallerySlots": 8,
+  "travel": [
+    {
+      "title": "Getting there",
+      "meta": "Two hours from Makati",
+      "body": "Aguinaldo Highway slows on Sunday afternoons. Leave by noon if you are driving from the city."
+    },
+    {
+      "title": "Where to stay",
+      "meta": "Fifteen minutes away",
+      "body": "Three hotels sit near the venue. Message us and we will send the list with the rates we arranged."
+    },
+    {
+      "title": "Parking",
+      "meta": "Free on site",
+      "body": "Sixty slots inside the gate, with an overflow lot five minutes away and a shuttle running between the two."
+    }
+  ],
+  "faq": [
+    {
+      "q": "May I bring a guest?",
+      "a": "Seats are reserved for the names on your invitation. Search your name above to see exactly who is included in your party."
+    },
+    {
+      "q": "Are children welcome?",
+      "a": "Yes. Please include them when you reply so the caterer can plan, and tell us if you need a high chair."
+    },
+    {
+      "q": "What if it rains?",
+      "a": "The venue keeps a covered chapel and an indoor hall ready. Nothing gets cancelled."
+    },
+    {
+      "q": "Until when can I reply?",
+      "a": "Please reply by the date on the invitation so we can confirm numbers with the caterer."
+    }
+  ],
+  "weddingParty": [
+    {
+      "role": "Maid of honour",
+      "name": "Bea Lim"
+    },
+    {
+      "role": "Best man",
+      "name": "Enzo Ramos"
+    },
+    {
+      "role": "Bridesmaid",
+      "name": "Kaye Domingo"
+    },
+    {
+      "role": "Bridesmaid",
+      "name": "Nadine Cruz"
+    },
+    {
+      "role": "Groomsman",
+      "name": "I\u00f1igo Perez"
+    },
+    {
+      "role": "Groomsman",
+      "name": "Tristan Ong"
+    }
+  ],
+  "registry": {
+    "note": "Your presence is the gift. If you would still like to give something, we are saving towards a home.",
+    "links": [
+      {
+        "label": "Our home fund",
+        "url": "#"
+      },
+      {
+        "label": "Gift registry",
+        "url": "#"
+      }
+    ]
+  }
 };

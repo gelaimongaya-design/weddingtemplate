@@ -408,15 +408,24 @@
 })();
 
 (function () {
-  var links = Array.prototype.slice.call(document.querySelectorAll(".aside .nav a"));
-  if (!links.length || !("IntersectionObserver" in window)) return;
+  var bar = document.getElementById("progress");
+  var dots = Array.prototype.slice.call(document.querySelectorAll(".dots a"));
+  function onScroll() {
+    if (!bar) return;
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + "%";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  if (!dots.length || !("IntersectionObserver" in window)) return;
   var byId = {};
-  links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+  dots.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       var a = byId[e.target.id];
       if (a && e.isIntersecting) {
-        links.forEach(function (x) { x.classList.remove("on"); });
+        dots.forEach(function (x) { x.classList.remove("on"); });
         a.classList.add("on");
       }
     });

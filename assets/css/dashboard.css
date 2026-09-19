@@ -1,8 +1,8 @@
 :root{
-  --page:#F6EDE1; --card:#FDF8F0; --ink:#3E2A1E; --dim:#8A7460;
-  --line:#E4D0B8; --key:#94472A; --key-soft:#F3E2D4;
-  --yes:#6F7A4B; --no:#A9442B; --wait:#B85C35;
-  --body:"Karla",system-ui,sans-serif; --display:"Marcellus",Georgia,serif; --hand:"Ballet",cursive;
+  --page:#F8FAFC; --card:#FFFFFF; --ink:#1F2C3C; --dim:#6E7F91;
+  --line:#DAE4EE; --key:#22405E; --key-soft:#E7EFF7;
+  --yes:#3D6B54; --no:#A5533C; --wait:#33587D;
+  --body:"Manrope",system-ui,sans-serif; --display:"Playfair Display",Georgia,serif; --hand:"Great Vibes",cursive;
 }
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0; background:var(--page); color:var(--ink); font-family:var(--body);

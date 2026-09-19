@@ -1,4 +1,4 @@
-Sol Wedding Website Template
+Porcelain Wedding Website Template
 
 TWO PAGES
 
@@ -7,9 +7,9 @@ TWO PAGES
 
 THE LAYOUT
 
-  A fixed panel on the left holding the invitation and the menu, with the content scrolling beside it. On a phone the panel sits at the top and the content follows.
+  Full height sections with dot navigation on the right and a progress line at the top.
 
-  Sections: Our story, the day, getting there, reply, album, wedding party.
+  Sections: Invitation, our story, the day, details with travel, reply, album, questions.
 
 WHAT IS IN THIS FOLDER
 
@@ -21,17 +21,15 @@ WHAT IS IN THIS FOLDER
   assets/js/config.js         names, date, venue, schedule, travel, guest list, album
   assets/js/site.js           guest search, RSVP form, album viewer, upload, motion
   assets/js/dashboard.js      counts, filters, CSV export
-  assets/fonts/               ballet.woff2, karla.woff2, marcellus.woff2
+  assets/fonts/               great-vibes.woff2, manrope.woff2, playfair-display-italic.woff2, playfair-display.woff2
   assets/img/photos/          empty, this is where your photographs go
   assets/img/
-      divider.svg            the ornament between sections
       illustration.svg       the drawing inside the story panel
-      pampas-l-2.svg         dried grasses, left of the footer
-      pampas-l.svg           dried grasses, left of the invitation
-      pampas-r-2.svg         dried grasses, right of the footer
-      pampas-r.svg           dried grasses, right of the invitation
       paper-grain.svg        the paper texture behind the whole page
-      sun-arc.svg            the arcs rising behind the invitation
+      plate-ring-2.svg       the floral ring around the story panel
+      plate-ring.svg         the floral ring around the invitation
+      veil.svg               artwork
+      vine-band.svg          the vine across the top of the page
       wash-hero.svg          the colour wash inside the invitation panel
       wash-story.svg         the colour wash inside the story panel
   backend/Code.gs             the Google Apps Script that receives replies

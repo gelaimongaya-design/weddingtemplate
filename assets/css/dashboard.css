@@ -1,8 +1,8 @@
 :root{
-  --page:#FBF7EF; --card:#FFFDF8; --ink:#3A332A; --dim:#8A7F70;
-  --line:#E7DCCB; --key:#8A6B39; --key-soft:#F0E6D6;
-  --yes:#6C7C63; --no:#A9583F; --wait:#B08D57;
-  --body:"Jost",system-ui,sans-serif; --display:"Cormorant Garamond",Georgia,serif; --hand:"Pinyon Script",cursive;
+  --page:#F6EDE1; --card:#FDF8F0; --ink:#3E2A1E; --dim:#8A7460;
+  --line:#E4D0B8; --key:#94472A; --key-soft:#F3E2D4;
+  --yes:#6F7A4B; --no:#A9442B; --wait:#B85C35;
+  --body:"Karla",system-ui,sans-serif; --display:"Marcellus",Georgia,serif; --hand:"Ballet",cursive;
 }
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0; background:var(--page); color:var(--ink); font-family:var(--body);
